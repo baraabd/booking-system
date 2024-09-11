@@ -1,36 +1,41 @@
-const db = require('../db/db');
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const db = require('./db'); // Import the database connection
+const { insertBooking, getBookings } = require('./bookingService'); // Import service functions
 
-// Check if the time slot is available
-const isTimeSlotAvailable = (date, timeFrom, timeTo) => {
-  return new Promise((resolve, reject) => {
-    const query = `SELECT * FROM bookings WHERE date = ? AND (timeFrom < ? AND timeTo > ?)`;
-    db.all(query, [date, timeTo, timeFrom], (err, rows) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve(rows.length === 0); // Available if no rows found
-    });
-  });
-};
+const app = express();
+const PORT = process.env.PORT || 3001;
 
-// Save the booking into the database
-const saveBooking = (booking) => {
-  return new Promise((resolve, reject) => {
-    const { name, email, phone, address, postalCode, date, timeFrom, timeTo } = booking;
-    const query = `
-      INSERT INTO bookings (name, email, phone, address, postalCode, date, timeFrom, timeTo)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-    db.run(query, [name, email, phone, address, postalCode, date, timeFrom, timeTo], function (err) {
-      if (err) {
-        return reject(err);
-      }
-      resolve({ id: this.lastID, ...booking });
-    });
-  });
-};
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
 
-module.exports = {
-  isTimeSlotAvailable,
-  saveBooking
-};
+// Route to insert a booking
+app.post('/api/book', async (req, res) => {
+  const { name, email, phone, address, postalCode, date, timeFrom, timeTo } = req.body;
+
+  try {
+    const newBooking = await insertBooking({ name, email, phone, address, postalCode, date, timeFrom, timeTo });
+    res.status(201).json({ message: 'Booking created', booking: newBooking });
+  } catch (error) {
+    console.error('Error creating booking:', error);
+    res.status(500).json({ message: 'Error creating booking' });
+  }
+});
+
+// Route to get all bookings
+app.get('/api/bookings', async (req, res) => {
+  try {
+    const bookings = await getBookings();
+    res.status(200).json(bookings);
+  } catch (error) {
+    console.error('Error fetching bookings:', error);
+    res.status(500).json({ message: 'Error fetching bookings' });
+  }
+});
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

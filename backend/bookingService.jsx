@@ -1,22 +1,10 @@
-const db = require('../db/db');
+const db = require('./db');
 
-// Check if the time slot is available
-const isTimeSlotAvailable = (date, timeFrom, timeTo) => {
-  return new Promise((resolve, reject) => {
-    const query = `SELECT * FROM bookings WHERE date = ? AND (timeFrom < ? AND timeTo > ?)`;
-    db.all(query, [date, timeTo, timeFrom], (err, rows) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve(rows.length === 0); // Available if no rows found
-    });
-  });
-};
+// Insert a new booking
+const insertBooking = (booking) => {
+  const { name, email, phone, address, postalCode, date, timeFrom, timeTo } = booking;
 
-// Save the booking into the database
-const saveBooking = (booking) => {
   return new Promise((resolve, reject) => {
-    const { name, email, phone, address, postalCode, date, timeFrom, timeTo } = booking;
     const query = `
       INSERT INTO bookings (name, email, phone, address, postalCode, date, timeFrom, timeTo)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -30,7 +18,19 @@ const saveBooking = (booking) => {
   });
 };
 
+// Query all bookings
+const getBookings = () => {
+  return new Promise((resolve, reject) => {
+    db.all('SELECT * FROM bookings', [], (err, rows) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(rows);
+    });
+  });
+};
+
 module.exports = {
-  isTimeSlotAvailable,
-  saveBooking
+  insertBooking,
+  getBookings
 };
