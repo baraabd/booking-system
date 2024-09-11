@@ -1,6 +1,6 @@
-const { gql } = require('apollo-server-express');
+const { buildSchema } = require('graphql');
 
-const typeDefs = gql`
+const schema = buildSchema(`
   type Query {
     listBookings: [Booking]
   }
@@ -12,6 +12,8 @@ const typeDefs = gql`
     phone: String
     address: String
     postalCode: String
+    bookingStart: String
+    bookingEnd: String
   }
 
   type Mutation {
@@ -20,9 +22,11 @@ const typeDefs = gql`
       email: String!, 
       phone: String!, 
       address: String!, 
-      postalCode: String!
+      postalCode: String!,
+      bookingStart: String!,
+      bookingEnd: String!
     ): Booking
   }
-`;
+`);
 
-module.exports = typeDefs;
+module.exports = schema;

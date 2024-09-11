@@ -9,9 +9,13 @@ const Booking = sequelize.define('Booking', {
     email: { type: DataTypes.STRING, allowNull: false },
     phone: { type: DataTypes.STRING, allowNull: false },
     address: { type: DataTypes.STRING, allowNull: false },
-    postalCode: { type: DataTypes.STRING, allowNull: false }
+    postalCode: { type: DataTypes.STRING, allowNull: false },
+    bookingStart: { type: DataTypes.STRING, allowNull: false },
+    bookingEnd: { type: DataTypes.STRING, allowNull: false }
+}, {
+    timestamps: false  // Disable createdAt and updatedAt
 });
 
-sequelize.sync();  // This creates the table if it doesn't exist yet
+sequelize.sync();  // Sync the model with the database
 
-module.exports = Booking;
+module.exports = { Booking, sequelize };
