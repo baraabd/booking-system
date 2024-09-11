@@ -44,6 +44,8 @@ function BookingForm({ onBookingSubmit }) {
       const data = await response.json();
 
       if (response.ok) {
+        console.log("BookingForm");
+
         setSuccess('Booking confirmed successfully!');
         setName('');
         setEmail('');
@@ -52,6 +54,8 @@ function BookingForm({ onBookingSubmit }) {
         setPostalCode('');
         onBookingSubmit(data.booking);  // Pass booking data back to the parent component (if needed)
       } else {
+        console.log("BookingForm_Not");
+
         setError(data.message || 'An error occurred while confirming the booking.');
       }
     } catch (error) {
