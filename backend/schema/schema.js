@@ -14,6 +14,12 @@ const schema = buildSchema(`
     postalCode: String
     bookingStart: String
     bookingEnd: String
+    serviceName: String
+    servicePrice: Float
+    totalArea: Float
+    discount: Float
+    amount: Float
+
   }
 
   type Mutation {
@@ -24,7 +30,12 @@ const schema = buildSchema(`
       address: String!, 
       postalCode: String!,
       bookingStart: String!,
-      bookingEnd: String!
+      bookingEnd: String!,
+      serviceName: String!,
+      servicePrice: Float!,
+      totalArea: Float!,
+      discount: Float!,
+      amount: Float!,
     ): Booking
   }
 `);

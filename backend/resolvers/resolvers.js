@@ -20,7 +20,13 @@ const rootResolver = {
                 address: args.address,
                 postalCode: args.postalCode,
                 bookingStart: args.bookingStart,
-                bookingEnd: args.bookingEnd
+                bookingEnd: args.bookingEnd,
+                serviceName: args.serviceName,
+                servicePrice: args.servicePrice,
+                totalArea: args.totalArea,
+                discount: args.discount,
+                amount: args.amount
+
             });
             console.log('New booking added:', newBooking);
 
