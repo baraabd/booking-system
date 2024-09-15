@@ -76,6 +76,10 @@
   box-shadow: 0 0 8px rgba(0, 121, 107, 0.5);
 }
 
+form.booking-form {
+  margin-right: 20px;
+}
+
 /* Mobile Responsiveness */
 @media screen and (max-width: 600px) {
   .service-details-container {
