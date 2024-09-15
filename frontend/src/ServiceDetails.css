@@ -38,20 +38,26 @@
   transition: color 0.3s ease;
 }
 
-.service-form input {
+.service-form input,
+.service-form select {
   padding: 14px;
   font-size: 16px;
   border: 2px solid #ccc;
   border-radius: 10px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
 }
 
-/* Focus and hover effects for inputs */
+/* Focus and hover effects for inputs and select */
 .service-form input:focus,
-.service-form input:hover {
+.service-form select:focus {
   border-color: #26a69a;
   box-shadow: 0 0 8px rgba(38, 166, 154, 0.3);
   outline: none;
+}
+
+.service-form select {
+  cursor: pointer;
 }
 
 /* Confirm button styling */
@@ -74,10 +80,6 @@
 .confirm-button:focus {
   outline: none;
   box-shadow: 0 0 8px rgba(0, 121, 107, 0.5);
-}
-
-form.booking-form {
-  margin-right: 20px;
 }
 
 /* Mobile Responsiveness */

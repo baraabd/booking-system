@@ -1,18 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../ServiceDetails.css';
 
-function ServiceDetails({ onConfirmBooking }) {  
-  const [serviceName, setServiceName] = useState('');
-  const [servicePrice, setServicePrice] = useState('');
+const services = [
+  { name: 'Clean house', price: 100 },
+  { name: 'Move things', price: 1000 },
+  { name: 'Clean apartment', price: 100 },
+  { name: 'Clean and move', price: 1500 },
+];
+
+function ServiceDetails({ onConfirmBooking }) {
+  const [selectedService, setSelectedService] = useState(services[0].name);
+  const [servicePrice, setServicePrice] = useState(services[0].price);
   const [totalArea, setTotalArea] = useState('');
-  const [discount, setDiscount] = useState('');
-  const [amount, setAmount] = useState('');
+  const [discount, setDiscount] = useState(0);
+  const [amount, setAmount] = useState(0);
+
+  // Function to calculate the total amount whenever the service or area changes
+  useEffect(() => {
+    const area = parseFloat(totalArea) || 0;
+    const priceBeforeDiscount = area * servicePrice;
+    const discountValue = priceBeforeDiscount * (parseFloat(discount) / 100) || 0;
+    const finalAmount = priceBeforeDiscount - discountValue;
+    setAmount(finalAmount.toFixed(2));
+  }, [servicePrice, totalArea, discount]);
+
+  // Function to handle service selection
+  const handleServiceChange = (e) => {
+    const selected = services.find(service => service.name === e.target.value);
+    setSelectedService(selected.name);
+    setServicePrice(selected.price);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onConfirmBooking({
-      serviceName,
-      servicePrice: parseFloat(servicePrice),
+      serviceName: selectedService,
+      servicePrice,
       totalArea: parseFloat(totalArea),
       discount: parseFloat(discount),
       amount: parseFloat(amount),
@@ -26,24 +49,21 @@ function ServiceDetails({ onConfirmBooking }) {
       <form onSubmit={handleSubmit} className="service-form">
         <div className="form-group">
           <label>Service Name:</label>
-          <input
-            type="text"
-            value={serviceName}
-            onChange={(e) => setServiceName(e.target.value)}
-            placeholder="Enter service name"
-            required
-          />
+          <select value={selectedService} onChange={handleServiceChange}>
+            {services.map(service => (
+              <option key={service.name} value={service.name}>
+                {service.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="form-group">
-          <label>Service Price:</label>
+          <label>Service Price (per m²):</label>
           <input
             type="number"
-            step="0.01"
             value={servicePrice}
-            onChange={(e) => setServicePrice(e.target.value)}
-            placeholder="Enter service price"
-            required
+            disabled
           />
         </div>
 
@@ -67,19 +87,15 @@ function ServiceDetails({ onConfirmBooking }) {
             value={discount}
             onChange={(e) => setDiscount(e.target.value)}
             placeholder="Enter discount"
-            required
           />
         </div>
 
         <div className="form-group">
-          <label>Amount:</label>
+          <label>Total Amount:</label>
           <input
             type="number"
-            step="0.01"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            placeholder="Enter final amount"
-            required
+            readOnly
           />
         </div>
 
