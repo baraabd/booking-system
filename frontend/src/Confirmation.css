@@ -1,35 +1,75 @@
-.confirmation-container {
-    background-color: #e0f7fa;
+/* Booking confirmation container */
+.booking-confirmed-container {
+  background-color: #ffffff;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.booking-confirmed-container h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.booking-confirmed-container p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.booking-info {
+  margin-bottom: 20px;
+}
+
+.booking-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.booking-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #00796b;
+}
+
+.booking-value {
+  font-size: 16px;
+  color: #333;
+}
+
+/* Footer message */
+.booking-footer p {
+  font-size: 16px;
+  font-weight: 500;
+  color: #555;
+}
+
+/* Mobile responsiveness */
+@media screen and (max-width: 600px) {
+  .booking-confirmed-container {
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: center;
   }
-  
-  .confirmation-container h2 {
-    font-size: 26px;
-    color: #26a69a;
+
+  .booking-confirmed-container h2 {
+    font-size: 24px;
   }
-  
-  .confirmation-container p {
-    font-size: 18px;
-    margin: 10px 0;
+
+  .booking-row {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  /* Mobile Responsiveness */
-  @media screen and (max-width: 600px) {
-    .confirmation-container {
-      padding: 15px;
-    }
-  
-    .confirmation-container h2 {
-      font-size: 22px;
-    }
-  
-    .confirmation-container p {
-      font-size: 16px;
-    }
+
+  .booking-label, .booking-value {
+    font-size: 14px;
   }
-  
+
+  .booking-footer p {
+    font-size: 14px;
+  }
+}
