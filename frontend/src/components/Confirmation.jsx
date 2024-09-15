@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles.css';  // Import the global styles
+import '../Confirmation.css';  // Import the global styles
 
 function Confirmation({ bookingDetails }) {
   if (!bookingDetails) {

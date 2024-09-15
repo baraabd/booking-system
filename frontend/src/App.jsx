@@ -2,46 +2,52 @@ import React, { useState } from 'react';
 import CalendarComponent from './components/Calendar';
 import TimeSlots from './components/TimeSlots';
 import BookingForm from './components/BookingForm';
+import ServiceDetails from './components/ServiceDetails';
 import Confirmation from './components/Confirmation';
-import './styles.css';  // Import the global styles
+import './styles.css';
 
 function App() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTimeFrom, setSelectedTimeFrom] = useState('');
   const [selectedTimeTo, setSelectedTimeTo] = useState('');
+  const [userDetails, setUserDetails] = useState(null);
   const [bookingDetails, setBookingDetails] = useState(null);
   const [stage, setStage] = useState(1);
 
-  // Handle Date Selection
   const handleDateSelect = (date) => {
     setSelectedDate(date);
-    setStage(2);  // Move to the next stage (Time Slot selection)
+    setStage(2);
   };
 
-  // Handle Time Slot Selection
   const handleTimeSelect = (from, to) => {
     setSelectedTimeFrom(from);
     setSelectedTimeTo(to);
-    setStage(3);  // Move to the next stage (User Details Form)
+    setStage(3);
   };
 
-  // Handle User Details Submission
-  const handleBookingSubmit = (details) => {
+  const handleProceedToService = (details) => {
+    setUserDetails(details);
+    setStage(4);
+  };
+
+  const handleConfirmBooking = (serviceDetails) => {
     setBookingDetails({
-      ...details,  // Include user details like name, email, phone, address, postal code
+      ...userDetails,
+      ...serviceDetails,
       date: selectedDate,
       timeFrom: selectedTimeFrom,
       timeTo: selectedTimeTo,
     });
-    setStage(4);  // Move to the next stage (Confirmation)
+    setStage(5);  // Move to confirmation stage
   };
 
   return (
     <div>
       {stage === 1 && <CalendarComponent onDateSelect={handleDateSelect} />}
       {stage === 2 && <TimeSlots onTimeSelect={handleTimeSelect} />}
-      {stage === 3 && <BookingForm onBookingSubmit={handleBookingSubmit} />}
-      {stage === 4 && <Confirmation bookingDetails={bookingDetails} />}
+      {stage === 3 && <BookingForm onProceedToService={handleProceedToService} />}
+      {stage === 4 && <ServiceDetails onConfirmBooking={handleConfirmBooking} />}
+      {stage === 5 && <Confirmation bookingDetails={bookingDetails} />}
     </div>
   );
 }

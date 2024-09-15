@@ -1,0 +1,102 @@
+/* Service details container */
+.service-details-container {
+  background-color: #ffffff;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 20px auto;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.service-details-container h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+/* Service form styling */
+.service-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.service-form .form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.service-form label {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 8px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.service-form input {
+  padding: 14px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Focus and hover effects for inputs */
+.service-form input:focus,
+.service-form input:hover {
+  border-color: #26a69a;
+  box-shadow: 0 0 8px rgba(38, 166, 154, 0.3);
+  outline: none;
+}
+
+/* Confirm button styling */
+.confirm-button {
+  background-color: #26a69a;
+  color: white;
+  font-size: 18px;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.confirm-button:hover {
+  background-color: #00796b;
+  transform: translateY(-2px);
+}
+
+.confirm-button:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(0, 121, 107, 0.5);
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 600px) {
+  .service-details-container {
+    padding: 20px;
+  }
+
+  .service-details-container h2 {
+    font-size: 24px;
+  }
+
+  .service-form label {
+    font-size: 14px;
+  }
+
+  .service-form input {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .confirm-button {
+    font-size: 16px;
+    padding: 12px;
+  }
+}

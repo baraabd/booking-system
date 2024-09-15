@@ -1,84 +1,31 @@
 import React, { useState } from 'react';
-import '../styles.css';  // Import the global styles
+import '../BookingForm.css';
 
-
-function BookingForm({ onBookingSubmit }) {
+function BookingForm({ onProceedToService }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [postalCode, setPostalCode] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
 
-  // Submit handler for the form
-  const handleSubmit = async (e) => {
+  const handleProceedToService = (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
-    setSuccess('');
-
-    // Booking data to be sent to the backend
-    const bookingData = {
-      name,
-      email,
-      phone,
-      address,
-      postalCode,
-      date: new Date().toLocaleDateString(), // Replace with actual selected date
-      timeFrom: '10:00',  // Replace with actual selected time
-      timeTo: '11:00',    // Replace with actual selected time
-    };
-
-    try {
-      // Make a POST request to the backend API
-      const response = await fetch('http://localhost:3001/api/book', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(bookingData),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log("BookingForm");
-
-        setSuccess('Booking confirmed successfully!');
-        setName('');
-        setEmail('');
-        setPhone('');
-        setAddress('');
-        setPostalCode('');
-        onBookingSubmit(data.booking);  // Pass booking data back to the parent component (if needed)
-      } else {
-        console.log("BookingForm_Not");
-
-        setError(data.message || 'An error occurred while confirming the booking.');
-      }
-    } catch (error) {
-      setError('An error occurred while confirming the booking.');
-    } finally {
-      setLoading(false);
-    }
+    const userDetails = { name, email, phone, address, postalCode };
+    onProceedToService(userDetails);
   };
 
   return (
     <div className="booking-form-container">
-      <h2>Enter Your Details</h2>
+      <h2 className="form-title">Enter Your Details</h2>
 
-      {error && <p className="error">{error}</p>}
-      {success && <p className="success">{success}</p>}
-
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleProceedToService} className="booking-form">
         <div className="form-group">
           <label>Name:</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            placeholder="Enter your name"
             required
           />
         </div>
@@ -89,6 +36,7 @@ function BookingForm({ onBookingSubmit }) {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
             required
           />
         </div>
@@ -99,6 +47,7 @@ function BookingForm({ onBookingSubmit }) {
             type="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
+            placeholder="Enter your phone number"
             required
           />
         </div>
@@ -109,6 +58,7 @@ function BookingForm({ onBookingSubmit }) {
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
+            placeholder="Enter your address"
             required
           />
         </div>
@@ -119,17 +69,17 @@ function BookingForm({ onBookingSubmit }) {
             type="text"
             value={postalCode}
             onChange={(e) => setPostalCode(e.target.value)}
+            placeholder="Enter your postal code"
             required
           />
         </div>
 
-        <button type="submit" disabled={loading}>
-          {loading ? 'Booking...' : 'Confirm Booking'}
+        <button type="submit" className="confirm-button">
+          Proceed to Service Details
         </button>
       </form>
     </div>
   );
 }
-
 
 export default BookingForm;
