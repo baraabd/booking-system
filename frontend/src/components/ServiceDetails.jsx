@@ -11,11 +11,11 @@ const services = [
 function ServiceDetails({ onConfirmBooking }) {
   const [selectedService, setSelectedService] = useState(services[0].name);
   const [servicePrice, setServicePrice] = useState(services[0].price);
-  const [totalArea, setTotalArea] = useState('');
-  const [discount, setDiscount] = useState(0);
+  const [totalArea, setTotalArea] = useState(50); // Default value for slider
+  const [discount, setDiscount] = useState(0); // Default value for slider
   const [amount, setAmount] = useState(0);
 
-  // Function to calculate the total amount whenever the service or area changes
+  // Function to calculate the total amount whenever the service, area, or discount changes
   useEffect(() => {
     const area = parseFloat(totalArea) || 0;
     const priceBeforeDiscount = area * servicePrice;
@@ -67,26 +67,27 @@ function ServiceDetails({ onConfirmBooking }) {
           />
         </div>
 
+        {/* Slider for Total Area */}
         <div className="form-group">
-          <label>Total Area (sqm):</label>
+          <label>Total Area (sqm): {totalArea}</label>
           <input
-            type="number"
-            step="0.01"
+            type="range"
+            min="10"
+            max="500"
             value={totalArea}
             onChange={(e) => setTotalArea(e.target.value)}
-            placeholder="Enter total area"
-            required
           />
         </div>
 
+        {/* Slider for Discount */}
         <div className="form-group">
-          <label>Discount (%):</label>
+          <label>Discount (%): {discount}</label>
           <input
-            type="number"
-            step="0.01"
+            type="range"
+            min="0"
+            max="100"
             value={discount}
             onChange={(e) => setDiscount(e.target.value)}
-            placeholder="Enter discount"
           />
         </div>
 
@@ -96,6 +97,7 @@ function ServiceDetails({ onConfirmBooking }) {
             type="number"
             value={amount}
             readOnly
+            disabled
           />
         </div>
 
