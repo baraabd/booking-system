@@ -3,7 +3,7 @@ import CalendarComponent from './components/Calendar';
 import TimeSlots from './components/TimeSlots';
 import BookingForm from './components/BookingForm';
 import ServiceDetails from './components/ServiceDetails';
-import Confirmation from './components/Confirmation';
+import BookingConfirmed from './components/Confirmation';
 import './styles.css';
 
 function App() {
@@ -11,34 +11,90 @@ function App() {
   const [selectedTimeFrom, setSelectedTimeFrom] = useState('');
   const [selectedTimeTo, setSelectedTimeTo] = useState('');
   const [userDetails, setUserDetails] = useState(null);
-  const [bookingDetails, setBookingDetails] = useState(null);
+  const [serviceDetails, setServiceDetails] = useState(null);
   const [stage, setStage] = useState(1);
 
+  // Calendar date selection handler
   const handleDateSelect = (date) => {
     setSelectedDate(date);
-    setStage(2);
+    setStage(2); // Move to TimeSlots after selecting date
   };
 
+  // Time slot selection handler
   const handleTimeSelect = (from, to) => {
     setSelectedTimeFrom(from);
     setSelectedTimeTo(to);
-    setStage(3);
+    setStage(3); // Move to BookingForm after selecting time slot
   };
 
+  // User details form submission handler
   const handleProceedToService = (details) => {
     setUserDetails(details);
-    setStage(4);
+    setStage(4); // Move to ServiceDetails after form submission
   };
 
-  const handleConfirmBooking = (serviceDetails) => {
-    setBookingDetails({
-      ...userDetails,
-      ...serviceDetails,
-      date: selectedDate,
-      timeFrom: selectedTimeFrom,
-      timeTo: selectedTimeTo,
-    });
-    setStage(5);  // Move to confirmation stage
+  // Function to send the booking information to the backend
+  const saveBookingToBackend = async (bookingDetails) => {
+    const query = `
+      mutation {
+        addBooking(
+          name: "${bookingDetails.name}",
+          email: "${bookingDetails.email}",
+          phone: "${bookingDetails.phone}",
+          address: "${bookingDetails.address}",
+          postalCode: "${bookingDetails.postalCode}",
+          bookingDate: "${bookingDetails.bookingDate}",
+          bookingStart: "${bookingDetails.timeFrom}",
+          bookingEnd: "${bookingDetails.timeTo}",
+          serviceName: "${bookingDetails.serviceName}",
+          servicePrice: ${bookingDetails.servicePrice},
+          totalArea: ${bookingDetails.totalArea},
+          discount: ${bookingDetails.discount},
+          amount: ${bookingDetails.amount}
+        ) {
+          id
+          name
+        }
+      }
+    `;
+
+    try {
+      const response = await fetch('http://localhost:4000/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save booking');
+      }
+
+      const result = await response.json();
+      console.log(result); // Handle success here
+    } catch (error) {
+      console.error('Error:', error);
+      alert('There was an issue saving your booking. Please try again.');
+    }
+  };
+
+  // Service details form submission handler
+  const handleConfirmBooking = async (serviceDetails) => {
+    const bookingDetails = {
+      ...userDetails, // Combine user details
+      ...serviceDetails, // Combine service details
+      bookingDate: selectedDate.toISOString(), // Format selected date to ISO string
+      timeFrom: selectedTimeFrom, // Include selected time from
+      timeTo: selectedTimeTo, // Include selected time to
+    };
+
+    setServiceDetails(bookingDetails);
+
+    // Save booking to backend
+    await saveBookingToBackend(bookingDetails);
+
+    setStage(5); // Move to BookingConfirmed (confirmation) stage
   };
 
   return (
@@ -47,7 +103,7 @@ function App() {
       {stage === 2 && <TimeSlots onTimeSelect={handleTimeSelect} />}
       {stage === 3 && <BookingForm onProceedToService={handleProceedToService} />}
       {stage === 4 && <ServiceDetails onConfirmBooking={handleConfirmBooking} />}
-      {stage === 5 && <Confirmation bookingDetails={bookingDetails} />}
+      {stage === 5 && <BookingConfirmed bookingDetails={serviceDetails} />}
     </div>
   );
 }

@@ -10,6 +10,7 @@ const Booking = sequelize.define('Booking', {
     phone: { type: DataTypes.STRING, allowNull: false },
     address: { type: DataTypes.STRING, allowNull: false },
     postalCode: { type: DataTypes.STRING, allowNull: false },
+    bookingDate: { type: DataTypes.STRING, allowNull: false },
     bookingStart: { type: DataTypes.STRING, allowNull: false },
     bookingEnd: { type: DataTypes.STRING, allowNull: false },
     serviceName: { type: DataTypes.STRING, allowNull: false },

@@ -12,6 +12,7 @@ const schema = buildSchema(`
     phone: String
     address: String
     postalCode: String
+    bookingDate: String
     bookingStart: String
     bookingEnd: String
     serviceName: String
@@ -29,6 +30,7 @@ const schema = buildSchema(`
       phone: String!, 
       address: String!, 
       postalCode: String!,
+      bookingDate: String!,
       bookingStart: String!,
       bookingEnd: String!,
       serviceName: String!,

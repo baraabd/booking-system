@@ -15,7 +15,6 @@ function ServiceDetails({ onConfirmBooking }) {
   const [discount, setDiscount] = useState(0); // Default value for slider
   const [amount, setAmount] = useState(0);
 
-  // Function to calculate the total amount whenever the service, area, or discount changes
   useEffect(() => {
     const area = parseFloat(totalArea) || 0;
     const priceBeforeDiscount = area * servicePrice;
@@ -24,7 +23,6 @@ function ServiceDetails({ onConfirmBooking }) {
     setAmount(finalAmount.toFixed(2));
   }, [servicePrice, totalArea, discount]);
 
-  // Function to handle service selection
   const handleServiceChange = (e) => {
     const selected = services.find(service => service.name === e.target.value);
     setSelectedService(selected.name);
@@ -67,7 +65,6 @@ function ServiceDetails({ onConfirmBooking }) {
           />
         </div>
 
-        {/* Slider for Total Area */}
         <div className="form-group">
           <label>Total Area (sqm): {totalArea}</label>
           <input
@@ -79,7 +76,6 @@ function ServiceDetails({ onConfirmBooking }) {
           />
         </div>
 
-        {/* Slider for Discount */}
         <div className="form-group">
           <label>Discount (%): {discount}</label>
           <input

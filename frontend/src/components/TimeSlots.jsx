@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import ReactSlider from 'react-slider';
 import '../timeSlott.css';  // Import the global styles
 
-const MINUTES_IN_A_DAY = 1440;
 const MIN_TIME = 360; // 06:00 AM
 const MAX_TIME = 1200; // 08:00 PM
 
@@ -20,7 +19,7 @@ function TimeSlots({ onTimeSelect }) {
     const fromTime = convertMinutesToTime(from);
     const toTime = convertMinutesToTime(to);
     setIsTimeSelected(true);
-    onTimeSelect(fromTime, toTime);
+    onTimeSelect(fromTime, toTime);  // Pass time to parent
   };
 
   const convertMinutesToTime = (minutes) => {
@@ -33,37 +32,37 @@ function TimeSlots({ onTimeSelect }) {
   };
 
   return (
-    <div className='slott-continer'>
-    <div className="time-slots-container">
-      <h2>Select Time Slot</h2>
-      <div className="time-range-display">
-        <span>From: <strong>{convertMinutesToTime(timeRange[0])}</strong></span>
-        <span>To: <strong>{convertMinutesToTime(timeRange[1])}</strong></span>
-      </div>
-
-      <ReactSlider
-        className="time-slider"
-        thumbClassName="time-slider-thumb"
-        trackClassName="time-slider-track"
-        min={MIN_TIME}
-        max={MAX_TIME}
-        step={30}
-        value={timeRange}
-        onChange={handleTimeRangeChange}
-        minDistance={60}
-        pearling
-      />
-
-      <button className="confirm-time-button" onClick={handleConfirmTime}>
-        Confirm Time
-      </button>
-
-      {isTimeSelected && (
-        <div className="confirmation-message">
-          <p>Time Confirmed! Proceed to enter your details.</p>
+    <div className="slott-continer">
+      <div className="time-slots-container">
+        <h2>Select Time Slot</h2>
+        <div className="time-range-display">
+          <span>From: <strong>{convertMinutesToTime(timeRange[0])}</strong></span>
+          <span>To: <strong>{convertMinutesToTime(timeRange[1])}</strong></span>
         </div>
-      )}
-    </div>
+
+        <ReactSlider
+          className="time-slider"
+          thumbClassName="time-slider-thumb"
+          trackClassName="time-slider-track"
+          min={MIN_TIME}
+          max={MAX_TIME}
+          step={30}
+          value={timeRange}
+          onChange={handleTimeRangeChange}
+          minDistance={60}
+          pearling
+        />
+
+        <button className="confirm-time-button" onClick={handleConfirmTime}>
+          Confirm Time
+        </button>
+
+        {isTimeSelected && (
+          <div className="confirmation-message">
+            <p>Time Confirmed! Proceed to enter your details.</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

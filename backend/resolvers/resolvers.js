@@ -19,6 +19,7 @@ const rootResolver = {
                 phone: args.phone,
                 address: args.address,
                 postalCode: args.postalCode,
+                bookingDate: args.bookingDate,
                 bookingStart: args.bookingStart,
                 bookingEnd: args.bookingEnd,
                 serviceName: args.serviceName,
