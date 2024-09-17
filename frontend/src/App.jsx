@@ -13,6 +13,9 @@ function App() {
   const [userDetails, setUserDetails] = useState(null);
   const [serviceDetails, setServiceDetails] = useState(null);
   const [stage, setStage] = useState(1);
+  const [discountMessage, setDiscountMessage] = useState('');
+  const [discountApplied, setDiscountApplied] = useState(false); // Track if discount is applied
+  const [discount, setDiscount] = useState(0); // Discount value
 
   // Calendar date selection handler
   const handleDateSelect = (date) => {
@@ -27,8 +30,48 @@ function App() {
     setStage(3); // Move to BookingForm after selecting time slot
   };
 
+  // Function to check if the user exists in the system
+  const checkUserExists = async (email) => {
+    const query = `
+      query {
+        checkUserExists(email: "${email}")
+      }
+    `;
+
+    try {
+      const response = await fetch('http://localhost:4000/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query }),
+      });
+
+      const result = await response.json();
+      console.log(result);
+      if (result.data && result.data.checkUserExists !== undefined) {
+        return result.data.checkUserExists;
+      } else {
+        throw new Error('Unexpected response structure');
+      }
+    } catch (error) {
+      console.error('Error checking user:', error);
+      return false; // Return false if any error occurs
+    }
+  };
+
   // User details form submission handler
-  const handleProceedToService = (details) => {
+  const handleProceedToService = async (details) => {
+    const userExists = await checkUserExists(details.email);
+    if (userExists) {
+      setDiscountMessage('Congratulations! You are already in our system and get a 10% discount!');
+      setDiscountApplied(true);
+      setDiscount(10); // Automatically set discount to 10% for returning users
+    } else {
+      setDiscountMessage('');
+      setDiscountApplied(false);
+      setDiscount(0); // Default to 0% discount for new users
+    }
     setUserDetails(details);
     setStage(4); // Move to ServiceDetails after form submission
   };
@@ -81,12 +124,16 @@ function App() {
 
   // Service details form submission handler
   const handleConfirmBooking = async (serviceDetails) => {
+    const discountedAmount = serviceDetails.amount - (serviceDetails.amount * (discount / 100)); // Apply discount
+
     const bookingDetails = {
       ...userDetails, // Combine user details
       ...serviceDetails, // Combine service details
       bookingDate: selectedDate.toISOString(), // Format selected date to ISO string
       timeFrom: selectedTimeFrom, // Include selected time from
       timeTo: selectedTimeTo, // Include selected time to
+      discount: discount, // Apply discount
+      amount: discountedAmount.toFixed(2), // Update the final amount with discount
     };
 
     setServiceDetails(bookingDetails);
@@ -101,8 +148,13 @@ function App() {
     <div>
       {stage === 1 && <CalendarComponent onDateSelect={handleDateSelect} />}
       {stage === 2 && <TimeSlots onTimeSelect={handleTimeSelect} />}
-      {stage === 3 && <BookingForm onProceedToService={handleProceedToService} />}
-      {stage === 4 && <ServiceDetails onConfirmBooking={handleConfirmBooking} />}
+      {stage === 3 && (
+        <>
+          {discountMessage && <p>{discountMessage}</p>} {/* Show discount message if applicable */}
+          <BookingForm onProceedToService={handleProceedToService} />
+        </>
+      )}
+      {stage === 4 && <ServiceDetails discount={discount} onConfirmBooking={handleConfirmBooking} />}
       {stage === 5 && <BookingConfirmed bookingDetails={serviceDetails} />}
     </div>
   );

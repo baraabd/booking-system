@@ -8,11 +8,11 @@ const services = [
   { name: 'Clean and move', price: 1500 },
 ];
 
-function ServiceDetails({ onConfirmBooking }) {
+function ServiceDetails({ discount: initialDiscount, onConfirmBooking }) {
   const [selectedService, setSelectedService] = useState(services[0].name);
   const [servicePrice, setServicePrice] = useState(services[0].price);
   const [totalArea, setTotalArea] = useState(50); // Default value for slider
-  const [discount, setDiscount] = useState(0); // Default value for slider
+  const [discount, setDiscount] = useState(initialDiscount); // Use the passed discount
   const [amount, setAmount] = useState(0);
 
   useEffect(() => {
@@ -77,12 +77,13 @@ function ServiceDetails({ onConfirmBooking }) {
         </div>
 
         <div className="form-group">
-          <label>Discount (%): {discount}</label>
+          <label>Discount (%):</label>
           <input
-            type="range"
+            type="number"
             min="0"
-            max="100"
+            max="10"
             value={discount}
+            disabled
             onChange={(e) => setDiscount(e.target.value)}
           />
         </div>
@@ -93,7 +94,6 @@ function ServiceDetails({ onConfirmBooking }) {
             type="number"
             value={amount}
             readOnly
-            disabled
           />
         </div>
 
