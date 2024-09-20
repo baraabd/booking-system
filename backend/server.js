@@ -4,6 +4,8 @@ const bookingSchema = require('./schema/schema');  // Import the updated schema
 const bookingResolver = require('./resolvers/resolvers');
 const cors = require('cors');
 const sequelize = require('./model/model').sequelize;
+require('dotenv').config();
+
 
 const app = express();
 
