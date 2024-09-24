@@ -1,80 +1,88 @@
 .booking-form-container {
-    background-color: #ffffff;
-    padding: 20px 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  
-  .form-title {
-    font-size: 26px;
-    color: #333;
-    text-align: center;
-    margin-bottom: 25px;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-group label {
-    display: block;
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 8px;
-  }
-  
-  .form-group input {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  
-  .form-group input:focus {
-    border-color: #26a69a;
-    box-shadow: 0 0 5px rgba(38, 166, 154, 0.5);
-    outline: none;
-  }
-  
-  .confirm-button {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    background-color: #26a69a;
-    color: white;
-    font-size: 18px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .confirm-button:hover {
-    background-color: #00796b;
-  }
-  
-  /* Mobile Responsiveness */
-  @media screen and (max-width: 600px) {
-    .booking-form-container {
+  background-color: #ffffff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 85%;
+  margin: 0 auto;
+  position: relative;
+  top: 80px; /* To ensure space for the progress bar */
+  transition: all 0.3s ease-in-out;
+}
+
+.form-title {
+  font-size: 26px;
+  color: #333;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.form-group input {
+  width: 95%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus {
+  border-color: #26a69a;
+  box-shadow: 0 0 5px rgba(38, 166, 154, 0.5);
+  outline: none;
+}
+
+.confirm-button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #26a69a;
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.confirm-button:hover {
+  background-color: #00796b;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 600px) {
+  .booking-form-container {
       padding: 15px;
-    }
-  
-    .form-title {
+      top: 60px;
+  }
+
+  booking-form-container {
+    max-width: 85%;
+  }
+
+  .form-title {
       font-size: 22px;
-    }
-  
-    .form-group input {
+  }
+
+  .form-group input {
       font-size: 14px;
       padding: 10px;
-    }
-  
-    .confirm-button {
+      width: 95%;
+  }
+
+  .confirm-button {
       font-size: 16px;
       padding: 10px;
-    }
   }
-  
+}

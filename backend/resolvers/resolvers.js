@@ -41,13 +41,13 @@ const rootResolver = {
   addBooking: async (args) => {
     try {
       let discount = args.discount;
-
+  
       // Check if the user already exists to apply a 10% discount
       const userExists = await Booking.findOne({ where: { email: args.email } });
       if (userExists) {
         discount = 10;  // Apply 10% discount if the user exists
       }
-
+  
       // Create a new booking in the database
       const newBooking = await Booking.create({
         name: args.name,
@@ -64,41 +64,26 @@ const rootResolver = {
         discount: discount,
         amount: args.amount - (args.amount * (discount / 100))  // Apply discount to total amount
       });
-
-      // Prepare the email options for the user
+  
+      // Prepare and send the email
       const userMailOptions = {
-        from: `Appointment Service <${process.env.ADMIN_MAIL}>`,  // Sender address (Outlook)
-        to: args.email,  // Recipient address (user)
+        from: `Appointment Service <${process.env.ADMIN_MAIL}>`,
+        to: args.email,
         subject: 'Appointment Confirmation',
         text: `Hi ${args.name}, your appointment for ${args.serviceName} is confirmed on ${args.bookingDate}.`,
-        html: `
-          <h2>Appointment Confirmation</h2>
-          <p>Dear <strong>${args.name}</strong>,</p>
-          <p>Your appointment for the <strong>${args.serviceName}</strong> service has been confirmed on <strong>${args.bookingDate}</strong> between <strong>${args.bookingStart}</strong> and <strong>${args.bookingEnd}</strong>.</p>
-          <p><strong>Details:</strong></p>
-          <ul>
-            <li>Service: ${args.serviceName}</li>
-            <li>Service Price: $${args.servicePrice} per m²</li>
-            <li>Total Area: ${args.totalArea} m²</li>
-            <li>Discount: ${discount}%</li>
-            <li>Total Amount: $${(args.amount - (args.amount * (discount / 100))).toFixed(2)}</li>
-          </ul>
-          <p>Thank you for choosing our service!</p>
-        `,
+        html: `...`, // As per your HTML email template
       };
-
-      console.log('Sending email with the following options:', userMailOptions);
-
-      // Send the email to the user
+  
       const info = await transporter.sendMail(userMailOptions);
       console.log('Email sent to user:', info.response);
-
+  
       return newBooking;
     } catch (error) {
-      console.error('Error adding booking and sending email:', error.message, error.stack);
+      console.error('Error adding booking and sending email:', error);  // Log full error object
       throw new Error('Error adding booking and sending email');
     }
   }
+  
 };
 
 module.exports = rootResolver;

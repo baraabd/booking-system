@@ -1,24 +1,49 @@
 import React, { useState } from 'react';
 import '../BookingForm.css';
 
-function BookingForm({ onProceedToService }) {
+function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExists }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [postalCode, setPostalCode] = useState('');
+  const [discountMessage, setDiscountMessage] = useState('');
+  const [appliedDiscount, setAppliedDiscount] = useState(initialDiscount || 0);
 
-  const handleProceedToService = (e) => {
+  const handleEmailChange = async (e) => {
+    const emailValue = e.target.value;
+    setEmail(emailValue);
+
+    if (emailValue) {
+      const userExists = await checkUserExists(emailValue);
+      if (userExists) {
+        setDiscountMessage('Congratulations! You are already in our system and get a 10% discount!');
+        setAppliedDiscount(10);
+      } else {
+        setDiscountMessage('');
+        setAppliedDiscount(0);
+      }
+    }
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const userDetails = { name, email, phone, address, postalCode };
-    onProceedToService(userDetails);
+    onConfirmBooking({
+      name,
+      email,
+      phone,
+      address,
+      postalCode,
+      discountMessage,
+      discount: parseFloat(appliedDiscount),
+    });
   };
 
   return (
     <div className="booking-form-container">
       <h2 className="form-title">Enter Your Details</h2>
 
-      <form onSubmit={handleProceedToService} className="booking-form">
+      <form onSubmit={handleSubmit} className="booking-form">
         <div className="form-group">
           <label>Name:</label>
           <input
@@ -35,10 +60,11 @@ function BookingForm({ onProceedToService }) {
           <input
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleEmailChange}
             placeholder="Enter your email"
             required
           />
+          {discountMessage && <p>{discountMessage}</p>}
         </div>
 
         <div className="form-group">
@@ -74,9 +100,7 @@ function BookingForm({ onProceedToService }) {
           />
         </div>
 
-        <button type="submit" className="confirm-button">
-          Proceed to Service Details
-        </button>
+        <button type="submit" className="confirm-button">Confirm booking</button>
       </form>
     </div>
   );

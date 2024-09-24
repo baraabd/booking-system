@@ -1,82 +1,57 @@
 import React from 'react';
-import '../Confirmation.css';  // Import the global styles
+import '../Confirmation.css';  // Ensure this file exists for styling
 
 function BookingConfirmed({ bookingDetails }) {
-  const { name, email, phone, address, postalCode, serviceName, servicePrice, totalArea, discount, amount, date, timeFrom, timeTo } = bookingDetails;
+  const {
+    name,
+    email,
+    phone,
+    address,
+    postalCode,
+    bookingDate,
+    timeFrom,
+    timeTo,
+    serviceName,
+    servicePrice,
+    totalArea,
+    discount,
+    amount,
+  } = bookingDetails || {};
+
+  const formattedDate = bookingDate
+    ? new Date(bookingDate).toLocaleDateString('en-GB', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : 'No Date';
+
+  // Redirect user to website or home page
+  const handleGoToWebsite = () => {
+    window.location.href = '/';  // Change this to your desired URL
+  };
 
   return (
     <div className="booking-confirmed-container">
       <h2>Booking Confirmed</h2>
-      <p>Thank you for booking with us, {name}!</p>
-
+      <p>Thank you for booking with us, {name || 'N/A'}!</p>
       <div className="booking-info">
-        {/* User Information */}
-        <div className="booking-row">
-          <span className="booking-label">Name:</span>
-          <span className="booking-value">{name}</span>
-        </div>
-
-        <div className="booking-row">
-          <span className="booking-label">Email:</span>
-          <span className="booking-value">{email}</span>
-        </div>
-
-        <div className="booking-row">
-          <span className="booking-label">Phone:</span>
-          <span className="booking-value">{phone}</span>
-        </div>
-
-        <div className="booking-row">
-          <span className="booking-label">Address:</span>
-          <span className="booking-value">{address}</span>
-        </div>
-
-        <div className="booking-row">
-          <span className="booking-label">Postal Code:</span>
-          <span className="booking-value">{postalCode}</span>
-        </div>
-
-        {/* Date and Time */}
-        <div className="booking-row">
-          <span className="booking-label">Date:</span>
-          <span className="booking-value">{new Date(date).toLocaleDateString()}</span>
-        </div>
-
-        <div className="booking-row">
-          <span className="booking-label">Time Slot:</span>
-          <span className="booking-value">{timeFrom} - {timeTo}</span>
-        </div>
-
-        {/* Service Information */}
-        <div className="booking-row">
-          <span className="booking-label">Service Name:</span>
-          <span className="booking-value">{serviceName}</span>
-        </div>
-
-        <div className="booking-row">
-          <span className="booking-label">Service Price (per m²):</span>
-          <span className="booking-value">${servicePrice}</span>
-        </div>
-
-        <div className="booking-row">
-          <span className="booking-label">Total Area (sqm):</span>
-          <span className="booking-value">{totalArea} m²</span>
-        </div>
-
-        <div className="booking-row">
-          <span className="booking-label">Discount:</span>
-          <span className="booking-value">{discount}%</span>
-        </div>
-
-        <div className="booking-row">
-          <span className="booking-label">Total Amount:</span>
-          <span className="booking-value">${amount}</span>
-        </div>
+        <div className="booking-row"><span className="booking-label">Name:</span> <span className="booking-value">{name || 'N/A'}</span></div>
+        <div className="booking-row"><span className="booking-label">Email:</span> <span className="booking-value">{email || 'N/A'}</span></div>
+        <div className="booking-row"><span className="booking-label">Phone:</span> <span className="booking-value">{phone || 'N/A'}</span></div>
+        <div className="booking-row"><span className="booking-label">Address:</span> <span className="booking-value">{address || 'N/A'}</span></div>
+        <div className="booking-row"><span className="booking-label">Postal Code:</span> <span className="booking-value">{postalCode || 'N/A'}</span></div>
+        <div className="booking-row"><span className="booking-label">Date:</span> <span className="booking-value">{formattedDate}</span></div>
+        <div className="booking-row"><span className="booking-label">Time Slot:</span> <span className="booking-value">{timeFrom || 'N/A'} - {timeTo || 'N/A'}</span></div>
+        <div className="booking-row"><span className="booking-label">Service Name:</span> <span className="booking-value">{serviceName || 'N/A'}</span></div>
+        <div className="booking-row"><span className="booking-label">Service Price (per m²):</span> <span className="booking-value">${servicePrice || 'N/A'}</span></div>
+        <div className="booking-row"><span className="booking-label">Total Area (sqm):</span> <span className="booking-value">{totalArea || 'N/A'} m²</span></div>
+        <div className="booking-row"><span className="booking-label">Discount:</span> <span className="booking-value">{discount || 0}%</span></div>
+        <div className="booking-row"><span className="booking-label">Total Amount:</span> <span className="booking-value">${amount || 'N/A'}</span></div>
       </div>
-
-      <div className="booking-footer">
-        <p>We look forward to providing you with excellent service!</p>
-      </div>
+      <button onClick={handleGoToWebsite} className="confirm-button">
+        Go to Website
+      </button>
     </div>
   );
 }

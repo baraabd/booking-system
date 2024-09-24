@@ -1,83 +1,86 @@
 import React, { useState } from 'react';
+import ProgressBar from './components/ProgressBar';
+import ServiceDetails from './components/ServiceDetails';
 import CalendarComponent from './components/Calendar';
 import TimeSlots from './components/TimeSlots';
 import BookingForm from './components/BookingForm';
-import ServiceDetails from './components/ServiceDetails';
 import BookingConfirmed from './components/Confirmation';
 import './styles.css';
 
 function App() {
+  const [stage, setStage] = useState(1);
+  const [serviceDetails, setServiceDetails] = useState({});
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTimeFrom, setSelectedTimeFrom] = useState('');
   const [selectedTimeTo, setSelectedTimeTo] = useState('');
-  const [userDetails, setUserDetails] = useState(null);
-  const [serviceDetails, setServiceDetails] = useState(null);
-  const [stage, setStage] = useState(1);
-  const [discountMessage, setDiscountMessage] = useState('');
-  const [discountApplied, setDiscountApplied] = useState(false); // Track if discount is applied
-  const [discount, setDiscount] = useState(0); // Discount value
+  const [userDetails, setUserDetails] = useState({});
+  const [discount, setDiscount] = useState(0);
 
-  // Calendar date selection handler
-  const handleDateSelect = (date) => {
-    setSelectedDate(date);
-    setStage(2); // Move to TimeSlots after selecting date
+  // Step 1: Handle service selection
+  const handleServiceSelect = (details) => {
+    setServiceDetails(details);
+    setStage(2); // Move to the next step (Calendar)
   };
 
-  // Time slot selection handler
+  // Step 2: Handle date selection
+  const handleDateSelect = (date) => {
+    setSelectedDate(date);
+  };
+
+  // Step 3: Handle time slot selection
   const handleTimeSelect = (from, to) => {
     setSelectedTimeFrom(from);
     setSelectedTimeTo(to);
-    setStage(3); // Move to BookingForm after selecting time slot
   };
 
-  // Function to check if the user exists in the system
+  // Step 4: Proceed to the user info form after selecting date and time
+  const handleProceedToUserInfo = () => {
+    if (selectedDate && selectedTimeFrom && selectedTimeTo) {
+      setStage(3); // Move to user info form
+    } else {
+      alert('Please select both a date and a time slot.');
+    }
+  };
+
+  // Step 5: Function to check if user exists for discount
   const checkUserExists = async (email) => {
     const query = `
       query {
         checkUserExists(email: "${email}")
       }
     `;
-
     try {
       const response = await fetch('http://localhost:4000/graphql', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query }),
       });
-
       const result = await response.json();
-      console.log(result);
-      if (result.data && result.data.checkUserExists !== undefined) {
-        return result.data.checkUserExists;
-      } else {
-        throw new Error('Unexpected response structure');
-      }
+      return result.data?.checkUserExists ?? false;
     } catch (error) {
       console.error('Error checking user:', error);
-      return false; // Return false if any error occurs
+      return false;
     }
   };
 
-  // User details form submission handler
-  const handleProceedToService = async (details) => {
-    const userExists = await checkUserExists(details.email);
-    if (userExists) {
-      setDiscountMessage('Congratulations! You are already in our system and get a 10% discount!');
-      setDiscountApplied(true);
-      setDiscount(10); // Automatically set discount to 10% for returning users
-    } else {
-      setDiscountMessage('');
-      setDiscountApplied(false);
-      setDiscount(0); // Default to 0% discount for new users
-    }
+  // Step 6: Handle user info submission and set the discount
+  const handleUserDetailsSubmit = (details) => {
     setUserDetails(details);
-    setStage(4); // Move to ServiceDetails after form submission
+    setDiscount(details.discount); // Apply discount if user exists
+    setStage(4); // Move to confirmation
   };
 
-  // Function to send the booking information to the backend
-  const saveBookingToBackend = async (bookingDetails) => {
+  // Step 7: Save booking to backend (this also triggers email sending)
+  const saveBookingToBackend = async () => {
+    const bookingDetails = {
+      ...userDetails,
+      ...serviceDetails,
+      bookingDate: selectedDate.toISOString(),
+      bookingStart: selectedTimeFrom,
+      bookingEnd: selectedTimeTo,
+      discount,
+    };
+
     const query = `
       mutation {
         addBooking(
@@ -87,8 +90,8 @@ function App() {
           address: "${bookingDetails.address}",
           postalCode: "${bookingDetails.postalCode}",
           bookingDate: "${bookingDetails.bookingDate}",
-          bookingStart: "${bookingDetails.timeFrom}",
-          bookingEnd: "${bookingDetails.timeTo}",
+          bookingStart: "${bookingDetails.bookingStart}",
+          bookingEnd: "${bookingDetails.bookingEnd}",
           serviceName: "${bookingDetails.serviceName}",
           servicePrice: ${bookingDetails.servicePrice},
           totalArea: ${bookingDetails.totalArea},
@@ -104,58 +107,63 @@ function App() {
     try {
       const response = await fetch('http://localhost:4000/graphql', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to save booking');
+      if (!response.ok) throw new Error('Failed to save booking');
+      const result = await response.json();
+      if (result.errors) {
+        console.error('GraphQL Errors:', result.errors);
+        return null;
       }
 
-      const result = await response.json();
-      console.log(result); // Handle success here
+      return result.data;
     } catch (error) {
-      console.error('Error:', error);
-      alert('There was an issue saving your booking. Please try again.');
+      console.error('Error saving booking:', error);
+      alert('Error saving your booking. Please try again.');
+      return null;
     }
   };
 
-  // Service details form submission handler
-  const handleConfirmBooking = async (serviceDetails) => {
-    const discountedAmount = serviceDetails.amount - (serviceDetails.amount * (discount / 100)); // Apply discount
-
-    const bookingDetails = {
-      ...userDetails, // Combine user details
-      ...serviceDetails, // Combine service details
-      bookingDate: selectedDate.toISOString(), // Format selected date to ISO string
-      timeFrom: selectedTimeFrom, // Include selected time from
-      timeTo: selectedTimeTo, // Include selected time to
-      discount: discount, // Apply discount
-      amount: discountedAmount.toFixed(2), // Update the final amount with discount
-    };
-
-    setServiceDetails(bookingDetails);
-
-    // Save booking to backend
-    await saveBookingToBackend(bookingDetails);
-
-    setStage(5); // Move to BookingConfirmed (confirmation) stage
+  // Step 8: Confirm booking and apply discount
+  const handleConfirmBooking = async () => {
+    const savedBooking = await saveBookingToBackend();
+    if (savedBooking) {
+      setStage(5); // Move to booking confirmation screen
+    }
   };
 
   return (
-    <div>
-      {stage === 1 && <CalendarComponent onDateSelect={handleDateSelect} />}
-      {stage === 2 && <TimeSlots onTimeSelect={handleTimeSelect} />}
-      {stage === 3 && (
+    <div className="app-container">
+      <ProgressBar currentStage={stage} />
+
+      {stage === 1 && <ServiceDetails onProceedToUser={handleServiceSelect} />}  
+      
+      {stage === 2 && (
         <>
-          {discountMessage && <p>{discountMessage}</p>} {/* Show discount message if applicable */}
-          <BookingForm onProceedToService={handleProceedToService} />
+          <CalendarComponent onDateSelect={handleDateSelect} />
+          <TimeSlots onTimeSelect={handleTimeSelect} />
+          <button onClick={handleProceedToUserInfo} className="confirm-button">
+            Proceed to User Info
+          </button>
         </>
       )}
-      {stage === 4 && <ServiceDetails discount={discount} onConfirmBooking={handleConfirmBooking} />}
-      {stage === 5 && <BookingConfirmed bookingDetails={serviceDetails} />}
+      {stage === 3 && (
+        <BookingForm
+          onConfirmBooking={handleUserDetailsSubmit}  // Fixed prop name
+          checkUserExists={checkUserExists}
+          discount={discount}
+        />
+      )}
+      {stage === 4 && (
+        <>
+          <BookingConfirmed bookingDetails={{ ...userDetails, ...serviceDetails, bookingDate: selectedDate, timeFrom: selectedTimeFrom, timeTo: selectedTimeTo }} />
+          <button onClick={handleConfirmBooking} className="confirm-button">
+            Confirm Booking
+          </button>
+        </>
+      )}
     </div>
   );
 }

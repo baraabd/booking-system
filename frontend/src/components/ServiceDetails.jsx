@@ -8,17 +8,17 @@ const services = [
   { name: 'Clean and move', price: 1500 },
 ];
 
-function ServiceDetails({ discount: initialDiscount, onConfirmBooking }) {
+function ServiceDetails({ onProceedToUser, discount: initialDiscount }) {
   const [selectedService, setSelectedService] = useState(services[0].name);
   const [servicePrice, setServicePrice] = useState(services[0].price);
   const [totalArea, setTotalArea] = useState(50); // Default value for slider
-  const [discount, setDiscount] = useState(initialDiscount); // Use the passed discount
+  const [discount, setDiscount] = useState(initialDiscount || 0); // Use the passed discount
   const [amount, setAmount] = useState(0);
 
   useEffect(() => {
     const area = parseFloat(totalArea) || 0;
     const priceBeforeDiscount = area * servicePrice;
-    const discountValue = priceBeforeDiscount * (parseFloat(discount) / 100) || 0;
+    const discountValue = priceBeforeDiscount * (discount / 100);
     const finalAmount = priceBeforeDiscount - discountValue;
     setAmount(finalAmount.toFixed(2));
   }, [servicePrice, totalArea, discount]);
@@ -31,13 +31,8 @@ function ServiceDetails({ discount: initialDiscount, onConfirmBooking }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onConfirmBooking({
-      serviceName: selectedService,
-      servicePrice,
-      totalArea: parseFloat(totalArea),
-      discount: parseFloat(discount),
-      amount: parseFloat(amount),
-    });
+    const serviceDetails = { selectedService, servicePrice, totalArea, discount, amount };
+    onProceedToUser(serviceDetails);  
   };
 
   return (
@@ -84,7 +79,6 @@ function ServiceDetails({ discount: initialDiscount, onConfirmBooking }) {
             max="10"
             value={discount}
             disabled
-            onChange={(e) => setDiscount(e.target.value)}
           />
         </div>
 
@@ -97,7 +91,7 @@ function ServiceDetails({ discount: initialDiscount, onConfirmBooking }) {
           />
         </div>
 
-        <button type="submit" className="confirm-button">Confirm Booking</button>
+        <button type="submit" className="confirm-button">Proceed to Date & Time</button>
       </form>
     </div>
   );
