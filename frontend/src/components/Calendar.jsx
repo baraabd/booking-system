@@ -27,7 +27,7 @@ function CalendarComponent({ onDateSelect }) {
 
   return (
     <div className="calendar-container" aria-label="Calendar container">
-      <h2 className="calendar-title" aria-label="Select a date">Select a Date</h2>
+      <h2 className="calendar-title" aria-label="Select a date">Ange datumet som passar dig!</h2>
       <Calendar
         onChange={handleDateChange}
         value={selectedDate}

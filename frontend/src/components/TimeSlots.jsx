@@ -25,10 +25,10 @@ function TimeSlots({ onTimeSelect }) {
 
   return (
     <div className="time-slots-container">
-      <h2>Select Time Slot</h2>
+      <h2>Vilken period passar dig?</h2>
       <div className="time-range-display">
-        <span>From: <strong>{convertMinutesToTime(timeRange[0])}</strong></span>
-        <span>To: <strong>{convertMinutesToTime(timeRange[1])}</strong></span>
+        <span>Från: <strong>{convertMinutesToTime(timeRange[0])}</strong></span>
+        <span>Till: <strong>{convertMinutesToTime(timeRange[1])}</strong></span>
       </div>
       <ReactSlider
         className="time-slider"

@@ -37,6 +37,8 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
       discountMessage,
       discount: parseFloat(appliedDiscount),
     });
+    console.log(appliedDiscount);
+
   };
 
   return (
@@ -45,7 +47,7 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
 
       <form onSubmit={handleSubmit} className="booking-form">
         <div className="form-group">
-          <label>Name:</label>
+          <label>Namn:</label>
           <input
             type="text"
             value={name}
@@ -56,7 +58,7 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
         </div>
 
         <div className="form-group">
-          <label>Email:</label>
+          <label>E-post:</label>
           <input
             type="email"
             value={email}
@@ -68,7 +70,7 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
         </div>
 
         <div className="form-group">
-          <label>Phone:</label>
+          <label>Telefonnummer:</label>
           <input
             type="tel"
             value={phone}
@@ -79,7 +81,7 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
         </div>
 
         <div className="form-group">
-          <label>Address:</label>
+          <label>Adress:</label>
           <input
             type="text"
             value={address}
@@ -90,7 +92,7 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
         </div>
 
         <div className="form-group">
-          <label>Postal Code:</label>
+          <label>Postnummer:</label>
           <input
             type="text"
             value={postalCode}
@@ -100,7 +102,7 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
           />
         </div>
 
-        <button type="submit" className="confirm-button">Confirm booking</button>
+        <button type="submit" className="confirm-button">Sammanfatta på service</button>
       </form>
     </div>
   );

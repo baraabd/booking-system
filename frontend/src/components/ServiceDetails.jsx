@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import '../ServiceDetails.css';
 
 const services = [
-  { name: 'Clean house', price: 100 },
-  { name: 'Move things', price: 1000 },
-  { name: 'Clean apartment', price: 100 },
-  { name: 'Clean and move', price: 1500 },
+  { name: 'Hemstädning', price: 13 },
+  { name: 'Flyttstädning', price: 32 },
+  { name: 'Flyttning', price: 79 },
 ];
 
 function ServiceDetails({ onProceedToUser, discount: initialDiscount }) {
@@ -31,17 +30,19 @@ function ServiceDetails({ onProceedToUser, discount: initialDiscount }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const serviceDetails = { selectedService, servicePrice, totalArea, discount, amount };
+    const serviceDetails = { serviceName: selectedService, servicePrice, totalArea, discount, amount };
     onProceedToUser(serviceDetails);  
   };
+  
+  
 
   return (
     <div className="service-details-container">
-      <h2>Enter Service Details</h2>
+      <h2>Ange vilket service du önskaer</h2>
 
       <form onSubmit={handleSubmit} className="service-form">
         <div className="form-group">
-          <label>Service Name:</label>
+          <label>Serice namn:</label>
           <select value={selectedService} onChange={handleServiceChange}>
             {services.map(service => (
               <option key={service.name} value={service.name}>
@@ -52,7 +53,7 @@ function ServiceDetails({ onProceedToUser, discount: initialDiscount }) {
         </div>
 
         <div className="form-group">
-          <label>Service Price (per m²):</label>
+          <label>Service Pris (per m²):</label>
           <input
             type="number"
             value={servicePrice}
@@ -61,7 +62,7 @@ function ServiceDetails({ onProceedToUser, discount: initialDiscount }) {
         </div>
 
         <div className="form-group">
-          <label>Total Area (sqm): {totalArea}</label>
+          <label>Total yta (sqm): {totalArea}</label>
           <input
             type="range"
             min="10"
@@ -72,7 +73,7 @@ function ServiceDetails({ onProceedToUser, discount: initialDiscount }) {
         </div>
 
         <div className="form-group">
-          <label>Discount (%):</label>
+          <label>Rabatt (%):</label>
           <input
             type="number"
             min="0"
@@ -83,7 +84,7 @@ function ServiceDetails({ onProceedToUser, discount: initialDiscount }) {
         </div>
 
         <div className="form-group">
-          <label>Total Amount:</label>
+          <label>Totalt belopp:</label>
           <input
             type="number"
             value={amount}
@@ -91,7 +92,7 @@ function ServiceDetails({ onProceedToUser, discount: initialDiscount }) {
           />
         </div>
 
-        <button type="submit" className="confirm-button">Proceed to Date & Time</button>
+        <button type="submit" className="confirm-button">Fortsätt till datum och tid</button>
       </form>
     </div>
   );

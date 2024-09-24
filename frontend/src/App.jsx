@@ -20,6 +20,8 @@ function App() {
   const handleServiceSelect = (details) => {
     setServiceDetails(details);
     setStage(2); // Move to the next step (Calendar)
+    console.log(details)
+
   };
 
   // Step 2: Handle date selection
@@ -31,6 +33,7 @@ function App() {
   const handleTimeSelect = (from, to) => {
     setSelectedTimeFrom(from);
     setSelectedTimeTo(to);
+    console.log(from,to)
   };
 
   // Step 4: Proceed to the user info form after selecting date and time
@@ -38,7 +41,7 @@ function App() {
     if (selectedDate && selectedTimeFrom && selectedTimeTo) {
       setStage(3); // Move to user info form
     } else {
-      alert('Please select both a date and a time slot.');
+      alert('Välj både datum och tid!');
     }
   };
 
@@ -67,6 +70,7 @@ function App() {
   const handleUserDetailsSubmit = (details) => {
     setUserDetails(details);
     setDiscount(details.discount); // Apply discount if user exists
+    console.log(details)
     setStage(4); // Move to confirmation
   };
 
@@ -80,7 +84,7 @@ function App() {
       bookingEnd: selectedTimeTo,
       discount,
     };
-
+    console.log(userDetails, serviceDetails);
     const query = `
       mutation {
         addBooking(
@@ -145,7 +149,7 @@ function App() {
           <CalendarComponent onDateSelect={handleDateSelect} />
           <TimeSlots onTimeSelect={handleTimeSelect} />
           <button onClick={handleProceedToUserInfo} className="confirm-button">
-            Proceed to User Info
+          Fortsätt till ange din info
           </button>
         </>
       )}
@@ -160,7 +164,7 @@ function App() {
         <>
           <BookingConfirmed bookingDetails={{ ...userDetails, ...serviceDetails, bookingDate: selectedDate, timeFrom: selectedTimeFrom, timeTo: selectedTimeTo }} />
           <button onClick={handleConfirmBooking} className="confirm-button">
-            Confirm Booking
+          Bekräfta bokning
           </button>
         </>
       )}
