@@ -164,9 +164,13 @@ function App() {
         <>
           <CalendarComponent onDateSelect={handleDateSelect} />
           <TimeSlots onTimeSelect={handleTimeSelect} />
-          <button onClick={handleProceedToUserInfo} className="confirm-button">
+          <div className='buttonDev'> 
+
+          <button onClick={handleProceedToUserInfo} className="confirm-button-time">
           Fortsätt till ange din info
           </button>
+
+          </div>
         </>
       )}
       {stage === 3 && (
@@ -179,7 +183,7 @@ function App() {
       {stage === 4 && (
         <>
           <BookingConfirmed bookingDetails={{ ...userDetails, ...serviceDetails, bookingDate: selectedDate, timeFrom: selectedTimeFrom, timeTo: selectedTimeTo }} />
-          <button onClick={handleConfirmBooking} className="confirm-button">
+          <button onClick={handleConfirmBooking} className="confirm-button-confirmation">
           Bekräfta bokning
           </button>
         </>

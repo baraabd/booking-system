@@ -3,10 +3,9 @@
   padding: 20px 30px;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  max-width: 85%;
   margin: 0 auto;
   position: relative;
-  top: 80px; /* To ensure space for the progress bar */
+  top: 150px; /* To ensure space for the progress bar */
   transition: all 0.3s ease-in-out;
 }
 
@@ -43,7 +42,7 @@
   outline: none;
 }
 
-.confirm-button {
+.confirm-button-user {
   display: block;
   width: 100%;
   padding: 12px;
@@ -56,7 +55,7 @@
   transition: background-color 0.3s ease;
 }
 
-.confirm-button:hover {
+.confirm-button-user:hover {
   background-color: #00796b;
 }
 

@@ -1,11 +1,9 @@
 /* General Form Styles */
-.booking-form-container {
-  background-color: #ffffff;
-  padding: 20px 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  margin: 0 auto;
+
+.app-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .form-title {
@@ -26,6 +24,11 @@
   margin-bottom: 8px;
 }
 
+form.booking-form {
+  width: 300px;
+  padding-right: 20px;
+}
+
 .form-group input {
   width: 100%;
   padding: 12px;
@@ -41,7 +44,7 @@
   outline: none;
 }
 
-.confirm-button {
+.confirm-button-time {
   display: block;
   width: 100%;
   padding: 12px;
@@ -52,17 +55,34 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  
 }
 
-.confirm-button:hover {
+.confirm-button-confirmation {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #26a69a;
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 18%;
+  margin-top: 150px;
+  
+}
+
+.confirm-button-time:hover {
   background-color: #00796b;
 }
 
+.confirm-button-confirmation:hover {
+  background-color: #00796b;
+}
 /* Mobile Responsiveness */
 @media screen and (max-width: 600px) {
-  .booking-form-container {
-    padding: 15px;
-  }
 
   .form-title {
     font-size: 22px;

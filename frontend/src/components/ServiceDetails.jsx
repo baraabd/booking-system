@@ -38,7 +38,7 @@ function ServiceDetails({ onProceedToUser, discount: initialDiscount }) {
 
   return (
     <div className="service-details-container">
-      <h2>Ange vilket service du önskaer</h2>
+      <h2>Ange vilket service du vill!</h2>
 
       <form onSubmit={handleSubmit} className="service-form">
         <div className="form-group">
@@ -92,7 +92,7 @@ function ServiceDetails({ onProceedToUser, discount: initialDiscount }) {
           />
         </div>
 
-        <button type="submit" className="confirm-button">Fortsätt till datum och tid</button>
+        <button type="submit" className="confirm-button-datum">Fortsätt till datum och tid</button>
       </form>
     </div>
   );

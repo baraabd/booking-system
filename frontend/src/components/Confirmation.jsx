@@ -33,8 +33,8 @@ function BookingConfirmed({ bookingDetails }) {
 
   return (
     <div className="booking-confirmed-container">
-      <h2>Bokning bekräftad</h2>
-      <p>Tack för att du bokar hos oss, {name || 'N/A'}!</p>
+      <h2>Bekräfta Bokning</h2>
+      <p>Kontrollera att din bokning stämmer, sen klick Bekräta!</p>
       <div className="booking-info">
         <div className="booking-row"><span className="booking-label">Namn:</span> <span className="booking-value">{name || 'N/A'}</span></div>
         <div className="booking-row"><span className="booking-label">E-post:</span> <span className="booking-value">{email || 'N/A'}</span></div>
@@ -49,9 +49,6 @@ function BookingConfirmed({ bookingDetails }) {
         <div className="booking-row"><span className="booking-label">Rabatt:</span> <span className="booking-value">{discount || 0}%</span></div>
         <div className="booking-row"><span className="booking-label">Totalt belopp:</span> <span className="booking-value">${amount || 'N/A'}</span></div>
       </div>
-      <button onClick={handleGoToWebsite} className="confirm-button">
-        Go to Website
-      </button>
     </div>
   );
 }

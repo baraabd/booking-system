@@ -9,6 +9,7 @@
   position: relative;
   top: 80px; /* Space for the progress bar */
   transition: all 0.3s ease-in-out;
+  top: 150px;
 }
 
 .booking-confirmed-container h2 {

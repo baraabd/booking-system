@@ -5,7 +5,7 @@
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   max-width: 600px;
-  margin: 20px auto;
+  margin: 150px auto;
   text-align: center;
   transition: all 0.3s ease;
 }
@@ -22,6 +22,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding-right: 20px;
 }
 
 .service-form .form-group {
@@ -84,7 +85,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* Confirm button styling */
-.confirm-button {
+.confirm-button-datum {
   background-color: #26a69a;
   color: white;
   font-size: 18px;
@@ -95,7 +96,7 @@ input[type="range"]::-moz-range-thumb {
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.confirm-button:hover {
+.confirm-button-datum:hover {
   background-color: #00796b;
   transform: translateY(-2px);
 }

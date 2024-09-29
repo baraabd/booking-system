@@ -3,10 +3,10 @@ import '../ProgressBar.css';  // Import the CSS for styling
 
 const ProgressBar = ({ currentStage }) => {
   const stages = [
-    { label: "Select Service", stage: 1 },
-    { label: "Select Date & Time", stage: 2 },
-    { label: "User Info", stage: 3 },
-    { label: "Confirmation", stage: 4 }
+    { label: "Välj Service", stage: 1 },
+    { label: "Välj Datum och tid", stage: 2 },
+    { label: "Användarinformation", stage: 3 },
+    { label: "Bekräftelse", stage: 4 }
   ];
 
   return (

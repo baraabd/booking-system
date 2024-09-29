@@ -43,7 +43,7 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
 
   return (
     <div className="booking-form-container">
-      <h2 className="form-title">Enter Your Details</h2>
+      <h2 className="form-title">Ange dina uppgifter</h2>
 
       <form onSubmit={handleSubmit} className="booking-form">
         <div className="form-group">
@@ -52,7 +52,7 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Enter your name"
+            placeholder="Ange ditt namn"
             required
           />
         </div>
@@ -63,7 +63,7 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
             type="email"
             value={email}
             onChange={handleEmailChange}
-            placeholder="Enter your email"
+            placeholder="Ange din e-postadress"
             required
           />
           {discountMessage && <p>{discountMessage}</p>}
@@ -75,7 +75,7 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
             type="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            placeholder="Enter your phone number"
+            placeholder="Ange ditt telefonnummer"
             required
           />
         </div>
@@ -86,7 +86,7 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            placeholder="Enter your address"
+            placeholder="Ange din adress"
             required
           />
         </div>
@@ -97,12 +97,12 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
             type="text"
             value={postalCode}
             onChange={(e) => setPostalCode(e.target.value)}
-            placeholder="Enter your postal code"
+            placeholder="Ange ditt postnummer"
             required
           />
         </div>
 
-        <button type="submit" className="confirm-button">Sammanfatta på service</button>
+        <button type="submit" className="confirm-button-user">Sammanfatta på service</button>
       </form>
     </div>
   );

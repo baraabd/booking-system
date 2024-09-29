@@ -1,4 +1,7 @@
 .calendar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   background-color: #ffffff;
   padding: 30px;
   border-radius: 12px;
@@ -7,6 +10,11 @@
   margin: 0 auto;
   text-align: center;
   overflow: hidden;
+  margin-top: 150px;
+}
+
+.buttonDev {
+  margin-top: 50px;
 }
 
 .calendar-title {

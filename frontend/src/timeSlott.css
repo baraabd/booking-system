@@ -3,13 +3,13 @@
   padding: 20px;
   background-color: #ffffff;
   border-radius: 12px;
-  max-width: 600px;
+  max-width: 500px;
   width: 85%;
   margin: 0 auto;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
   position: relative;
-  top: 80px;
+  top: 50px;
 }
 
 .time-slots-container h2 {
