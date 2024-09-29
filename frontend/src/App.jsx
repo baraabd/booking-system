@@ -79,12 +79,19 @@ function App() {
     const bookingDetails = {
       ...userDetails,
       ...serviceDetails,
-      bookingDate: selectedDate.toISOString(),
-      bookingStart: selectedTimeFrom,
-      bookingEnd: selectedTimeTo,
-      discount,
+      bookingDate: selectedDate ? selectedDate.toISOString() : null,
+      bookingStart: selectedTimeFrom || '',
+      bookingEnd: selectedTimeTo || '',
+      discount: discount || 0,
+      amount: serviceDetails.amount || 0,
     };
-    console.log(userDetails, serviceDetails);
+  
+    if (!bookingDetails.name || !bookingDetails.email || !bookingDetails.bookingDate) {
+      console.error("Missing booking details: ", bookingDetails);
+      alert("Booking details are incomplete. Please try again.");
+      return;
+    }
+  
     const query = `
       mutation {
         addBooking(
@@ -107,21 +114,28 @@ function App() {
         }
       }
     `;
-
+  
     try {
       const response = await fetch('http://localhost:4000/graphql', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query }),
       });
-
+  
       if (!response.ok) throw new Error('Failed to save booking');
       const result = await response.json();
       if (result.errors) {
         console.error('GraphQL Errors:', result.errors);
+  
+        // Check if email-related errors exist in the response
+        const emailError = result.errors.find((error) => error.message.includes('email'));
+        if (emailError) {
+          alert("Error sending confirmation email. Please contact support.");
+        }
+        
         return null;
       }
-
+  
       return result.data;
     } catch (error) {
       console.error('Error saving booking:', error);
@@ -129,6 +143,8 @@ function App() {
       return null;
     }
   };
+  
+  
 
   // Step 8: Confirm booking and apply discount
   const handleConfirmBooking = async () => {

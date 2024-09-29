@@ -4,20 +4,16 @@ require('dotenv').config();  // Load environment variables from .env
 
 // Create a transporter for Outlook
 const transporter = nodemailer.createTransport({
-  host: 'smtp-mail.outlook.com',  // SMTP host for Outlook
-  port: 587,                      // SMTP port for Outlook
-  secure: false,                   // true for 465, false for other ports
-  auth: {
-    user: process.env.ADMIN_MAIL,  // Your Outlook email address
-    pass: process.env.EMAIL_PASS,  // Your Outlook email password or app password
+  host: 'smtp-mail.outlook.com',
+  port: 587,
+  secure: false,
+  auth: { 
+     user: process.env.ADMIN_MAIL,
+    pass: process.env.EMAIL_PASS,
   },
-  tls: {
-    ciphers: 'SSLv3'  // Optional: helps with certain Outlook servers
-  }
+  logger: true,  // Logs the whole communication to console
+  debug: true,   // Logs SMTP connection data
 });
-
-console.log('OUTLOOK_USER:', process.env.ADMIN_MAIL);
-console.log('OUTLOOK_PASS:', process.env.EMAIL_PASS);
 
 const rootResolver = {
   listBookings: async () => {
@@ -71,11 +67,19 @@ const rootResolver = {
         to: args.email,
         subject: 'Appointment Confirmation',
         text: `Hi ${args.name}, your appointment for ${args.serviceName} is confirmed on ${args.bookingDate}.`,
-        html: `...`, // As per your HTML email template
+        html: `
+          <h1>Appointment Confirmation</h1>
+          <p>Hi ${args.name},</p>
+          <p>Your appointment for <strong>${args.serviceName}</strong> is confirmed on <strong>${args.bookingDate}</strong>.</p>
+        `,
       };
   
-      const info = await transporter.sendMail(userMailOptions);
-      console.log('Email sent to user:', info.response);
+      try {
+        const info = await transporter.sendMail(userMailOptions);
+        console.log('Email sent: ', info.response);
+      } catch (error) {
+        console.error('Error sending email: ', error.message);
+      }
   
       return newBooking;
     } catch (error) {
