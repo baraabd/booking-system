@@ -17,11 +17,12 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
     if (emailValue) {
       const userExists = await checkUserExists(emailValue);
       if (userExists) {
-        setDiscountMessage('Congratulations! You are already in our system and get a 10% discount!');
-        setAppliedDiscount(10);
-      } else {
         setDiscountMessage('');
         setAppliedDiscount(0);
+      } else {
+        setDiscountMessage('Grattis! Du är ny kund hos oss och får 10% rabatt!');
+        setAppliedDiscount(10);
+        
       }
     }
   };

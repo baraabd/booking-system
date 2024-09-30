@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: { 
-     user: process.env.ADMIN_MAIL,
+    user: process.env.ADMIN_MAIL,
     pass: process.env.EMAIL_PASS,
   },
   logger: true,  // Logs the whole communication to console
