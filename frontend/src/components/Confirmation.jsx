@@ -1,5 +1,5 @@
 import React from 'react';
-import '../Confirmation.css';  // Ensure this file exists for styling
+import '../Confirmation.css';
 
 function BookingConfirmed({ bookingDetails }) {
   const {
@@ -25,11 +25,6 @@ function BookingConfirmed({ bookingDetails }) {
         day: 'numeric',
       })
     : 'No Date';
-
-  // Redirect user to website or home page
-  const handleGoToWebsite = () => {
-    window.location.href = '/';  // Change this to your desired URL
-  }; 
 
   return (
     <div className="booking-confirmed-container">

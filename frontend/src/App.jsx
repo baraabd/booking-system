@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import ProgressBar from './components/ProgressBar';
-import ServiceDetails from './components/ServiceDetails';
-import CalendarComponent from './components/Calendar';
-import TimeSlots from './components/TimeSlots';
-import BookingForm from './components/BookingForm';
-import BookingConfirmed from './components/Confirmation';
-import './styles.css';
+import React, { useState } from "react";
+import ProgressBar from "./components/ProgressBar";
+import ServiceDetails from "./components/ServiceDetails";
+import CalendarComponent from "./components/Calendar";
+import TimeSlots from "./components/TimeSlots";
+import BookingForm from "./components/BookingForm";
+import BookingConfirmed from "./components/Confirmation";
+import "./styles.css";
 
 function App() {
   const [stage, setStage] = useState(1);
   const [serviceDetails, setServiceDetails] = useState({});
   const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTimeFrom, setSelectedTimeFrom] = useState('');
-  const [selectedTimeTo, setSelectedTimeTo] = useState('');
+  const [selectedTimeFrom, setSelectedTimeFrom] = useState("");
+  const [selectedTimeTo, setSelectedTimeTo] = useState("");
   const [userDetails, setUserDetails] = useState({});
   const [discount, setDiscount] = useState(0);
 
@@ -20,8 +20,7 @@ function App() {
   const handleServiceSelect = (details) => {
     setServiceDetails(details);
     setStage(2); // Move to the next step (Calendar)
-    console.log(details)
-
+    console.log(details);
   };
 
   // Step 2: Handle date selection
@@ -33,7 +32,7 @@ function App() {
   const handleTimeSelect = (from, to) => {
     setSelectedTimeFrom(from);
     setSelectedTimeTo(to);
-    console.log(from,to)
+    console.log(from, to);
   };
 
   // Step 4: Proceed to the user info form after selecting date and time
@@ -41,7 +40,7 @@ function App() {
     if (selectedDate && selectedTimeFrom && selectedTimeTo) {
       setStage(3); // Move to user info form
     } else {
-      alert('Välj både datum och tid!');
+      alert("Välj både datum och tid!");
     }
   };
 
@@ -53,15 +52,15 @@ function App() {
       }
     `;
     try {
-      const response = await fetch('http://localhost:4000/graphql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("http://localhost:4000/graphql", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query }),
       });
       const result = await response.json();
       return result.data?.checkUserExists ?? false;
     } catch (error) {
-      console.error('Error checking user:', error);
+      console.error("Error checking user:", error);
       return false;
     }
   };
@@ -70,7 +69,7 @@ function App() {
   const handleUserDetailsSubmit = (details) => {
     setUserDetails(details);
     setDiscount(details.discount); // Apply discount if user exists
-    console.log(details)
+    console.log(details);
     setStage(4); // Move to confirmation
   };
 
@@ -80,18 +79,22 @@ function App() {
       ...userDetails,
       ...serviceDetails,
       bookingDate: selectedDate ? selectedDate.toISOString() : null,
-      bookingStart: selectedTimeFrom || '',
-      bookingEnd: selectedTimeTo || '',
+      bookingStart: selectedTimeFrom || "",
+      bookingEnd: selectedTimeTo || "",
       discount: discount || 0,
       amount: serviceDetails.amount || 0,
     };
-  
-    if (!bookingDetails.name || !bookingDetails.email || !bookingDetails.bookingDate) {
+
+    if (
+      !bookingDetails.name ||
+      !bookingDetails.email ||
+      !bookingDetails.bookingDate
+    ) {
       console.error("Missing booking details: ", bookingDetails);
       alert("Booking details are incomplete. Please try again.");
       return;
     }
-  
+
     const query = `
       mutation {
         addBooking(
@@ -114,37 +117,37 @@ function App() {
         }
       }
     `;
-  
+
     try {
-      const response = await fetch('http://localhost:4000/graphql', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("http://localhost:4000/graphql", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query }),
       });
-  
-      if (!response.ok) throw new Error('Failed to save booking');
+
+      if (!response.ok) throw new Error("Failed to save booking");
       const result = await response.json();
       if (result.errors) {
-        console.error('GraphQL Errors:', result.errors);
-  
+        console.error("GraphQL Errors:", result.errors);
+
         // Check if email-related errors exist in the response
-        const emailError = result.errors.find((error) => error.message.includes('email'));
+        const emailError = result.errors.find((error) =>
+          error.message.includes("email")
+        );
         if (emailError) {
           alert("Error sending confirmation email. Please contact support.");
         }
-        
+
         return null;
       }
-  
+
       return result.data;
     } catch (error) {
-      console.error('Error saving booking:', error);
-      alert('Error saving your booking. Please try again.');
+      console.error("Error saving booking:", error);
+      alert("Error saving your booking. Please try again.");
       return null;
     }
   };
-  
-  
 
   // Step 8: Confirm booking and apply discount
   const handleConfirmBooking = async () => {
@@ -158,33 +161,46 @@ function App() {
     <div className="app-container">
       <ProgressBar currentStage={stage} />
 
-      {stage === 1 && <ServiceDetails onProceedToUser={handleServiceSelect} />}  
-      
+      {stage === 1 && <ServiceDetails onProceedToUser={handleServiceSelect} />}
+
       {stage === 2 && (
         <>
           <CalendarComponent onDateSelect={handleDateSelect} />
           <TimeSlots onTimeSelect={handleTimeSelect} />
-          <div className='buttonDev'> 
-
-          <button onClick={handleProceedToUserInfo} className="confirm-button-time">
-          Fortsätt till ange din info
-          </button>
-
+          <div className="buttonDev">
+            <button
+              onClick={handleProceedToUserInfo}
+              className="confirm-button-time"
+            >
+              Fortsätt till ange din info
+            </button>
           </div>
         </>
       )}
       {stage === 3 && (
         <BookingForm
-          onConfirmBooking={handleUserDetailsSubmit}  // Fixed prop name
+          onConfirmBooking={handleUserDetailsSubmit} // Fixed prop name
           checkUserExists={checkUserExists}
           discount={discount}
         />
       )}
       {stage === 4 && (
         <>
-          <BookingConfirmed bookingDetails={{ ...userDetails, ...serviceDetails, bookingDate: selectedDate, timeFrom: selectedTimeFrom, timeTo: selectedTimeTo }} />
-          <button onClick={handleConfirmBooking} className="confirm-button-confirmation">
-          Bekräfta bokning
+          <BookingConfirmed
+            bookingDetails={{
+              ...userDetails,
+              ...serviceDetails,
+              bookingDate: selectedDate,
+              timeFrom: selectedTimeFrom,
+              timeTo: selectedTimeTo,
+              discount, 
+            }}
+          />
+          <button
+            onClick={handleConfirmBooking}
+            className="confirm-button-confirmation"
+          >
+            Bekräfta bokning
           </button>
         </>
       )}

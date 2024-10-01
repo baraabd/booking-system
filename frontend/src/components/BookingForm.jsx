@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../BookingForm.css';
 
 function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExists }) {
@@ -10,19 +10,23 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
   const [discountMessage, setDiscountMessage] = useState('');
   const [appliedDiscount, setAppliedDiscount] = useState(initialDiscount || 0);
 
-  const handleEmailChange = async (e) => {
-    const emailValue = e.target.value;
-    setEmail(emailValue);
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
 
-    if (emailValue) {
-      const userExists = await checkUserExists(emailValue);
-      if (userExists) {
-        setDiscountMessage('');
-        setAppliedDiscount(0);
-      } else {
+  const handlePhoneChange = async (e) => {
+    const phoneValue = e.target.value;
+    setPhone(phoneValue);
+
+    if (email && phoneValue) {
+      // Check user eligibility for discount after both email and phone are entered
+      const userExists = await checkUserExists(email);
+      if (!userExists) {
         setDiscountMessage('Grattis! Du är ny kund hos oss och får 10% rabatt!');
         setAppliedDiscount(10);
-        
+      } else {
+        setDiscountMessage('');
+        setAppliedDiscount(0);
       }
     }
   };
@@ -38,8 +42,6 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
       discountMessage,
       discount: parseFloat(appliedDiscount),
     });
-    console.log(appliedDiscount);
-
   };
 
   return (
@@ -67,7 +69,6 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
             placeholder="Ange din e-postadress"
             required
           />
-          {discountMessage && <p>{discountMessage}</p>}
         </div>
 
         <div className="form-group">
@@ -75,11 +76,13 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
           <input
             type="tel"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={handlePhoneChange}
             placeholder="Ange ditt telefonnummer"
             required
           />
         </div>
+
+        {discountMessage && <p className='discountMessage'>{discountMessage}</p>}
 
         <div className="form-group">
           <label>Adress:</label>
