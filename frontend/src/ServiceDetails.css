@@ -39,17 +39,45 @@
   transition: color 0.3s ease;
 }
 
-.service-form input,
-.service-form select {
-  padding: 14px;
-  font-size: 16px;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  width: 100%;
+/* Styling for Service Buttons */
+.service-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-/* Slider input for Total Area and Discount */
+.service-buttons button {
+  flex: 1 1 calc(33.33% - 30px); /* Each button takes a third of the row, subtracting for the gap */
+  max-width: 150px;
+  background-color: #f0f0f0;
+  color: #333;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  text-align: center;
+}
+
+.service-buttons button:hover {
+  background-color: #e0e0e0;
+}
+
+.service-buttons .selected {
+  background-color: #26a69a;
+  color: white;
+  border-color: #26a69a;
+}
+
+/* Slider container and value styling */
+.slider-container {
+  position: relative;
+  width: 100%;
+  margin-top: 20px;
+}
+
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
@@ -59,29 +87,64 @@ input[type="range"] {
   outline: none;
   border-radius: 4px;
   margin: 10px 0;
+  transition: background-color 0.3s ease;
+}
+
+input[type="range"]:hover {
+  background-color: #ccc;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   background: #26a69a;
   cursor: pointer;
   border-radius: 50%;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s ease;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
 }
 
 input[type="range"]:hover::-webkit-slider-thumb {
   background: #00796b;
+  transform: scale(1.1);
 }
 
 input[type="range"]::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   background: #26a69a;
   cursor: pointer;
   border-radius: 50%;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, transform 0.2s ease;
+}
+
+input[type="range"]:hover::-moz-range-thumb {
+  background: #00796b;
+  transform: scale(1.1);
+}
+
+.slider-value {
+  position: absolute;
+  top: -40px;
+  transform: translateX(-50%);
+  background: #26a69a;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 14px;
+  pointer-events: none;
+  transition: left 0.3s ease;
+}
+
+/* Labels for static information */
+.service-form label.total-label {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
 }
 
 /* Confirm button styling */
@@ -101,7 +164,7 @@ input[type="range"]::-moz-range-thumb {
   transform: translateY(-2px);
 }
 
-.confirm-button:focus {
+.confirm-button-datum:focus {
   outline: none;
   box-shadow: 0 0 8px rgba(0, 121, 107, 0.5);
 }
@@ -110,6 +173,7 @@ input[type="range"]::-moz-range-thumb {
 @media screen and (max-width: 600px) {
   .service-details-container {
     padding: 20px;
+    margin: 100px auto;
   }
 
   .service-details-container h2 {
@@ -125,8 +189,20 @@ input[type="range"]::-moz-range-thumb {
     padding: 12px;
   }
 
-  .confirm-button {
+  .confirm-button-datum {
     font-size: 16px;
     padding: 12px;
+  }
+
+  .service-buttons button {
+    font-size: 14px;
+    padding: 10px 16px;
+    flex: 1 1 calc(50% - 10px); /* In mobile, each button takes 50% width */
+    max-width: unset;
+  }
+
+  .slider-value {
+    font-size: 12px;
+    top: -35px;
   }
 }

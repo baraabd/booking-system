@@ -8,33 +8,34 @@ const services = [
 ];
 
 function ServiceDetails({ onProceedToUser, discount: initialDiscount }) {
-  const [selectedService, setSelectedService] = useState(services[0].name);
-  const [servicePrice, setServicePrice] = useState(services[0].price);
+  const [selectedService, setSelectedService] = useState(services[0]);
   const [totalArea, setTotalArea] = useState(50); // Default value for slider
   const [discount, setDiscount] = useState(initialDiscount || 0); // Use the passed discount
   const [amount, setAmount] = useState(0);
 
   useEffect(() => {
     const area = parseFloat(totalArea) || 0;
-    const priceBeforeDiscount = area * servicePrice;
+    const priceBeforeDiscount = area * selectedService.price;
     const discountValue = priceBeforeDiscount * (discount / 100);
     const finalAmount = priceBeforeDiscount - discountValue;
     setAmount(finalAmount.toFixed(2));
-  }, [servicePrice, totalArea, discount]);
+  }, [selectedService, totalArea, discount]);
 
-  const handleServiceChange = (e) => {
-    const selected = services.find(service => service.name === e.target.value);
-    setSelectedService(selected.name);
-    setServicePrice(selected.price);
+  const handleServiceChange = (service) => {
+    setSelectedService(service);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const serviceDetails = { serviceName: selectedService, servicePrice, totalArea, discount, amount };
+    const serviceDetails = {
+      serviceName: selectedService.name,
+      servicePrice: selectedService.price,
+      totalArea,
+      discount,
+      amount,
+    };
     onProceedToUser(serviceDetails);  
   };
-  
-  
 
   return (
     <div className="service-details-container">
@@ -42,54 +43,44 @@ function ServiceDetails({ onProceedToUser, discount: initialDiscount }) {
 
       <form onSubmit={handleSubmit} className="service-form">
         <div className="form-group">
-          <label>Serice namn:</label>
-          <select value={selectedService} onChange={handleServiceChange}>
+          <label>Välj service:</label>
+          <div className="service-buttons">
             {services.map(service => (
-              <option key={service.name} value={service.name}>
+              <button
+                type="button"
+                key={service.name}
+                onClick={() => handleServiceChange(service)}
+                className={service.name === selectedService.name ? 'selected' : ''}
+              >
                 {service.name}
-              </option>
+              </button>
             ))}
-          </select>
+          </div>
         </div>
 
         <div className="form-group">
-          <label>Service Pris (per m²):</label>
-          <input
-            type="number"
-            value={servicePrice}
-            disabled
-          />
+          <label>Total yta (sqm):</label>
+          <div className="slider-container">
+            <input
+              type="range"
+              min="0"
+              max="200"
+              value={totalArea}
+              step="1"
+              onChange={(e) => setTotalArea(e.target.value)}
+            />
+            <div className="slider-value" style={{ left: `${(totalArea / 200) * 100}%` }}>
+              {totalArea} m²
+            </div>
+          </div>
         </div>
 
         <div className="form-group">
-          <label>Total yta (sqm): {totalArea}</label>
-          <input
-            type="range"
-            min="10"
-            max="500"
-            value={totalArea}
-            onChange={(e) => setTotalArea(e.target.value)}
-          />
+          <label>Rabatt (%): {discount}</label>
         </div>
 
         <div className="form-group">
-          <label>Rabatt (%):</label>
-          <input
-            type="number"
-            min="0"
-            max="10"
-            value={discount}
-            disabled
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Totalt belopp:</label>
-          <input
-            type="number"
-            value={amount}
-            readOnly
-          />
+          <label>Totalt belopp: {amount} kr</label>
         </div>
 
         <button type="submit" className="confirm-button-datum">Fortsätt till datum och tid</button>
