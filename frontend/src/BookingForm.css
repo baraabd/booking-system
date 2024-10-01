@@ -1,3 +1,4 @@
+/* Booking Form Styles */
 .booking-form-container {
   background-color: #ffffff;
   padding: 20px 30px;
@@ -59,33 +60,36 @@
   background-color: #00796b;
 }
 
+/* Discount message styling */
+.discountMessage {
+  color: red;          /* Set the text color to red */
+  font-weight: bold;   /* Make the text bold */
+  margin-top: 10px;    /* Add some spacing above the message */
+}
+
 /* Mobile Responsiveness */
 @media screen and (max-width: 600px) {
   .booking-form-container {
-      padding: 15px;
-      top: 60px;
+    padding: 15px;
+    top: 60px;
   }
 
-  booking-form-container {
+  .booking-form-container {
     max-width: 85%;
   }
 
   .form-title {
-      font-size: 22px;
+    font-size: 22px;
   }
 
   .form-group input {
-      font-size: 14px;
-      padding: 10px;
-      width: 95%;
+    font-size: 14px;
+    padding: 10px;
+    width: 95%;
   }
 
-  .confirm-button {
-      font-size: 16px;
-      padding: 10px;
+  .confirm-button-user {
+    font-size: 16px;
+    padding: 10px;
   }
-  p.discountMessage {
-    color: red;
-    font-weight: 600;
-}
 }
