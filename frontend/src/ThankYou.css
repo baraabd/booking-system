@@ -1,0 +1,35 @@
+.thank-you-container {
+    text-align: center;
+    padding: 20px;
+    margin-top: 150px;
+    position: relative; /* Make sure it's relative to hold fireworks animation */
+    overflow: hidden;
+  }
+  
+  .thank-you-container h2 {
+    font-size: 2em;
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  .thank-you-container p {
+    font-size: 1.4em;
+    margin-bottom: 30px;
+    color: #666;
+  }
+  
+  .go-home-button {
+    background-color: #26a69a;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+  }
+  
+  .go-home-button:hover {
+    background-color: #0056b3;
+  }
+  

@@ -5,6 +5,8 @@ import CalendarComponent from "./components/Calendar";
 import TimeSlots from "./components/TimeSlots";
 import BookingForm from "./components/BookingForm";
 import BookingConfirmed from "./components/Confirmation";
+import ThankYou from "./components/ThankYou"; // Import the ThankYou component
+
 import "./styles.css";
 
 function App() {
@@ -153,16 +155,20 @@ function App() {
   const handleConfirmBooking = async () => {
     const savedBooking = await saveBookingToBackend();
     if (savedBooking) {
-      setStage(5); // Move to booking confirmation screen
+      setStage(5); // Move to thank you screen
     }
   };
-
+  
+  // Function to handle going back to home
+  const handleGoHome = () => {
+    setStage(1); // Reset to the home page stage
+  };
+  
   return (
     <div className="app-container">
       <ProgressBar currentStage={stage} />
-
+  
       {stage === 1 && <ServiceDetails onProceedToUser={handleServiceSelect} />}
-
       {stage === 2 && (
         <>
           <CalendarComponent onDateSelect={handleDateSelect} />
@@ -179,7 +185,7 @@ function App() {
       )}
       {stage === 3 && (
         <BookingForm
-          onConfirmBooking={handleUserDetailsSubmit} // Fixed prop name
+          onConfirmBooking={handleUserDetailsSubmit}
           checkUserExists={checkUserExists}
           discount={discount}
         />
@@ -203,6 +209,9 @@ function App() {
             Bekräfta bokning
           </button>
         </>
+      )}
+      {stage === 5 && (
+        <ThankYou onGoHome={handleGoHome} /> // Thank you message with home button
       )}
     </div>
   );

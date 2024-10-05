@@ -15,8 +15,12 @@ function BookingConfirmed({ bookingDetails }) {
     servicePrice,
     totalArea,
     discount,
-    amount,
   } = bookingDetails || {};
+
+  // Apply discount to the amount calculation
+  const baseAmount = totalArea * servicePrice;
+  const discountAmount = (discount / 100) * baseAmount;
+  const finalAmount = baseAmount - discountAmount;
 
   const formattedDate = bookingDate
     ? new Date(bookingDate).toLocaleDateString('en-GB', {
@@ -39,10 +43,10 @@ function BookingConfirmed({ bookingDetails }) {
         <div className="booking-row"><span className="booking-label">Datum:</span> <span className="booking-value">{formattedDate}</span></div>
         <div className="booking-row"><span className="booking-label">Service tillgänglig:</span> <span className="booking-value">{timeFrom || 'N/A'} - {timeTo || 'N/A'}</span></div>
         <div className="booking-row"><span className="booking-label">Service Namn:</span> <span className="booking-value">{serviceName || 'N/A'}</span></div>
-        <div className="booking-row"><span className="booking-label">Service Pris (per m²):</span> <span className="booking-value">${servicePrice || 'N/A'}</span></div>
+        <div className="booking-row"><span className="booking-label">Service Pris (per m²):</span> <span className="booking-value">SEK{servicePrice || 'N/A'}</span></div>
         <div className="booking-row"><span className="booking-label">Total yta (sqm):</span> <span className="booking-value">{totalArea || 'N/A'} m²</span></div>
         <div className="booking-row"><span className="booking-label">Rabatt:</span> <span className="booking-value">{discount || 0}%</span></div>
-        <div className="booking-row"><span className="booking-label">Totalt belopp:</span> <span className="booking-value">${amount || 'N/A'}</span></div>
+        <div className="booking-row"><span className="booking-label">Totalt belopp:</span> <span className="booking-value">SEK{finalAmount.toFixed(2)}</span></div>
       </div>
     </div>
   );
