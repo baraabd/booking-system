@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../BookingForm.css';
 
 function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExists }) {
@@ -19,14 +19,13 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
     setPhone(phoneValue);
 
     if (email && phoneValue) {
-      // Check user eligibility for discount after both email and phone are entered
       const userExists = await checkUserExists(email);
       if (!userExists) {
         setDiscountMessage('Grattis! Du är ny kund hos oss och får 10% rabatt!');
-        setAppliedDiscount(10);
+        setAppliedDiscount(10); // Apply 10% discount for new customers
       } else {
         setDiscountMessage('');
-        setAppliedDiscount(0);
+        setAppliedDiscount(0); // No discount for returning customers
       }
     }
   };
@@ -39,8 +38,7 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
       phone,
       address,
       postalCode,
-      discountMessage,
-      discount: parseFloat(appliedDiscount),
+      discount: appliedDiscount, // Pass applied discount
     });
   };
 
