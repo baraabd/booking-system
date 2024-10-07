@@ -25,7 +25,7 @@ function TimeSlots({ onTimeSelect }) {
 
   return (
     <div className="time-slots-container">
-      <h2>Vilken period passar dig?</h2>
+      <h2>Välj en period som passar dig bäst!</h2>
       <div className="time-range-display">
         <span>Från: <strong>{convertMinutesToTime(timeRange[0])}</strong></span>
         <span>Till: <strong>{convertMinutesToTime(timeRange[1])}</strong></span>

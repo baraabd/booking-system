@@ -104,7 +104,7 @@ function BookingForm({ discount: initialDiscount, onConfirmBooking, checkUserExi
           />
         </div>
 
-        <button type="submit" className="confirm-button-user">Sammanfatta på service</button>
+        <button type="submit" className="confirm-button-user">Du är klarat, Granska din beställning!</button>
       </form>
     </div>
   );

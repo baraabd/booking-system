@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import '../Calendar.css';  // Import the global styles
+import '../Calendar.css';  
 
 function CalendarComponent({ onDateSelect }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -27,7 +27,7 @@ function CalendarComponent({ onDateSelect }) {
 
   return (
     <div className="calendar-container" aria-label="Calendar container">
-      <h2 className="calendar-title" aria-label="Select a date">Ange datumet som passar dig!</h2>
+      <h2 className="calendar-title" aria-label="Select a date">Välj ett datum som passar dig bäst!</h2>
       <Calendar
         onChange={handleDateChange}
         value={selectedDate}

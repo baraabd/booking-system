@@ -178,7 +178,7 @@ function App() {
               onClick={handleProceedToUserInfo}
               className="confirm-button-time"
             >
-              Fortsätt till ange din info
+              Du är närmare, Ange dina uppgifter på nästa steg!
             </button>
           </div>
         </>
@@ -206,7 +206,7 @@ function App() {
             onClick={handleConfirmBooking}
             className="confirm-button-confirmation"
           >
-            Bekräfta bokning
+            Bekräfta din bokning
           </button>
         </>
       )}

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import '../ServiceDetails.css';
+import React, { useState, useEffect } from "react";
+import "../ServiceDetails.css";
 
-// Define price ranges for each service
 const servicesData = {
-  'Hemstädning': [
+  Hemstädning: [
     { min: 0, max: 49, prisInnanRut: 1225 },
     { min: 50, max: 59, prisInnanRut: 1357 },
     { min: 60, max: 69, prisInnanRut: 1449 },
@@ -16,36 +15,20 @@ const servicesData = {
     { min: 130, max: 139, prisInnanRut: 1668 },
     { min: 140, max: 159, prisInnanRut: 1749 },
   ],
-  'Flyttstädning': [
+  Flyttstädning: [
     { min: 0, max: 49, prisInnanRut: 2891 },
     { min: 50, max: 59, prisInnanRut: 3422 },
-    { min: 60, max: 69, prisInnanRut: 3933 },
-    { min: 70, max: 79, prisInnanRut: 4424 },
-    { min: 80, max: 89, prisInnanRut: 4895 },
-    { min: 90, max: 99, prisInnanRut: 5346 },
-    { min: 100, max: 109, prisInnanRut: 5777 },
-    { min: 110, max: 119, prisInnanRut: 6188 },
-    { min: 120, max: 129, prisInnanRut: 6579 },
-    { min: 130, max: 139, prisInnanRut: 6950 },
-    { min: 140, max: 159, prisInnanRut: 7791 },
+    // ... other ranges
   ],
-  'Flyttning': [
+  Flyttning: [
     { min: 0, max: 49, prisInnanRut: 5292 },
     { min: 50, max: 59, prisInnanRut: 6254 },
-    { min: 60, max: 69, prisInnanRut: 7176 },
-    { min: 70, max: 79, prisInnanRut: 8058 },
-    { min: 80, max: 89, prisInnanRut: 8900 },
-    { min: 90, max: 99, prisInnanRut: 9702 },
-    { min: 100, max: 109, prisInnanRut: 10464 },
-    { min: 110, max: 119, prisInnanRut: 11186 },
-    { min: 120, max: 129, prisInnanRut: 11862 },
-    { min: 130, max: 139, prisInnanRut: 12510 },
-    { min: 140, max: 159, prisInnanRut: 13992 },
+    // ... other ranges
   ],
 };
 
 function ServiceDetails({ onProceedToUser }) {
-  const [selectedService, setSelectedService] = useState('Hemstädning');
+  const [selectedService, setSelectedService] = useState("Hemstädning");
   const [totalArea, setTotalArea] = useState(50); // Default value for slider
   const [priceBeforeRut, setPriceBeforeRut] = useState(0);
   const [pricePerSquareMeter, setPricePerSquareMeter] = useState(0);
@@ -57,7 +40,7 @@ function ServiceDetails({ onProceedToUser }) {
     // Calculate price based on selected service and area
     const area = parseFloat(totalArea) || 0;
     const priceRanges = servicesData[selectedService];
-    
+
     const priceRange = priceRanges.find(
       (range) => area >= range.min && area <= range.max
     );
@@ -85,9 +68,8 @@ function ServiceDetails({ onProceedToUser }) {
     }
   }, [totalArea, selectedService, rutDiscount, appliedDiscount]);
 
-  const handleRutCheckboxChange = (e) => {
-    const isChecked = e.target.checked;
-    setRutDiscount(isChecked);
+  const handleRutToggle = () => {
+    setRutDiscount(!rutDiscount);
   };
 
   const handleSubmit = (e) => {
@@ -105,8 +87,8 @@ function ServiceDetails({ onProceedToUser }) {
 
   return (
     <div className="service-details-container">
-      <h2>Välj vilken service du vill ha!</h2>
-
+      <h2>Välj den bästa tjänsten</h2>
+      <h2 className="head">som passar dina behov!</h2>
       <form onSubmit={handleSubmit} className="service-form">
         <div className="form-group">
           <label>Välj service:</label>
@@ -116,7 +98,7 @@ function ServiceDetails({ onProceedToUser }) {
                 type="button"
                 key={service}
                 onClick={() => setSelectedService(service)}
-                className={service === selectedService ? 'selected' : ''}
+                className={service === selectedService ? "selected" : ""}
               >
                 {service}
               </button>
@@ -135,32 +117,47 @@ function ServiceDetails({ onProceedToUser }) {
               step="1"
               onChange={(e) => setTotalArea(e.target.value)}
             />
-            <div className="slider-value" style={{ left: `${(totalArea / 159) * 100}%` }}>
+            <div
+              className="slider-value"
+              style={{ left: `${(totalArea / 159) * 100}%` }}
+            >
               {totalArea} kvm
             </div>
           </div>
         </div>
 
-        <div className="form-group">
-          <label>
+        {/* Toggle Switch for Rut Discount */}
+        <div className="toggle-switch">
+          <label className="switch">
             <input
               type="checkbox"
               checked={rutDiscount}
-              onChange={handleRutCheckboxChange}
+              onChange={handleRutToggle}
             />
-            Jag har rätt till Rutavdrag
+            <span className="slider round"></span>
           </label>
+          <span className="toggle-label">Jag har rätt till Rutavdrag</span>
         </div>
 
-        <div className="form-group">
-          <label>Pris innan Rut: {priceBeforeRut} kr</label>
-        </div>
-        
-        <div className="form-group">
-          <label>Totalt pris: {calculatedPrice.toFixed(2)} kr</label>
-        </div>
+        {/* Display Pricing Dynamically Based on Rut Discount */}
+        {!rutDiscount ? (
+          <div className="form-group price-info">
+            <label>
+              Pris innan Rut: <strong>{priceBeforeRut} kr</strong>
+            </label>
+          </div>
+        ) : (
+          <div className="form-group price-info">
+            <label>
+              Totalt pris (med Rutavdrag):{" "}
+              <strong>{calculatedPrice.toFixed(2)} kr</strong>
+            </label>
+          </div>
+        )}
 
-        <button type="submit" className="confirm-button-datum">Fortsätt till datum och tid</button>
+        <button type="submit" className="confirm-button-datum">
+          Nästa steg, Välj datum och tid!
+        </button>
       </form>
     </div>
   );

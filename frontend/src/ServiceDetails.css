@@ -13,7 +13,7 @@
 .service-details-container h2 {
   font-size: 28px;
   color: #333;
-  margin-bottom: 30px;
+  margin: 0px;
   font-weight: bold;
 }
 
@@ -29,7 +29,9 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  width: 100%;
 }
+
 
 .service-form label {
   font-size: 16px;
@@ -45,10 +47,11 @@
   gap: 15px;
   flex-wrap: wrap;
   justify-content: center;
+  width: 100%;
 }
 
 .service-buttons button {
-  flex: 1 1 calc(33.33% - 30px); /* Each button takes a third of the row, subtracting for the gap */
+  flex: 1 1 calc(33.33% - 30px);
   max-width: 150px;
   background-color: #f0f0f0;
   color: #333;
@@ -57,12 +60,13 @@
   padding: 12px 20px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s, transform 0.2s ease;
   text-align: center;
 }
 
 .service-buttons button:hover {
   background-color: #e0e0e0;
+  transform: translateY(-2px);
 }
 
 .service-buttons .selected {
@@ -128,7 +132,8 @@ input[type="range"]:hover::-moz-range-thumb {
 
 .slider-value {
   position: absolute;
-  top: -40px;
+  top: -20px;
+  left: 50%;
   transform: translateX(-50%);
   background: #26a69a;
   color: white;
@@ -140,11 +145,19 @@ input[type="range"]:hover::-moz-range-thumb {
   transition: left 0.3s ease;
 }
 
-/* Labels for static information */
-.service-form label.total-label {
+/* Labels for pricing information with dynamic styling */
+.price-info {
+  margin-top: 20px;
   font-size: 18px;
   font-weight: bold;
   color: #333;
+  text-align: center;
+}
+
+.price-info.rut-active {
+  color: #26a69a;
+  font-size: 20px;
+  transition: color 0.3s ease, font-size 0.3s ease;
 }
 
 /* Confirm button styling */
@@ -168,6 +181,80 @@ input[type="range"]:hover::-moz-range-thumb {
   outline: none;
   box-shadow: 0 0 8px rgba(0, 121, 107, 0.5);
 }
+
+/* Toggle Switch for Rutavdrag */
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.toggle-label {
+  font-size: 16px;
+  color: #555;
+  margin-left: 10px;
+  font-weight: 500;
+}
+
+/* Switch Container */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 25px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 25px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #26a69a;
+}
+
+input:checked + .slider:before {
+  transform: translateX(25px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+h2.head {
+  margin-bottom: 30px;
+}
+
 
 /* Mobile Responsiveness */
 @media screen and (max-width: 600px) {
@@ -205,4 +292,6 @@ input[type="range"]:hover::-moz-range-thumb {
     font-size: 12px;
     top: -35px;
   }
+
+
 }
