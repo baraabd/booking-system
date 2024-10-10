@@ -17,7 +17,7 @@ const schema = buildSchema(`
     bookingStart: String
     bookingEnd: String
     serviceName: String
-    servicePrice: Float
+    pricePerSquareMeter: Float
     totalArea: Float
     discount: Float
     amount: Float
@@ -34,7 +34,7 @@ const schema = buildSchema(`
       bookingStart: String!,
       bookingEnd: String!,
       serviceName: String!,
-      servicePrice: Float!,
+      pricePerSquareMeter: Float!,
       totalArea: Float!,
       discount: Float!,
       amount: Float!,

@@ -55,7 +55,7 @@ const rootResolver = {
         bookingStart: args.bookingStart,
         bookingEnd: args.bookingEnd,
         serviceName: args.serviceName,
-        servicePrice: args.servicePrice,
+        pricePerSquareMeter: args.pricePerSquareMeter,
         totalArea: args.totalArea,
         discount: discount,
         amount: args.amount - (args.amount * (discount / 100))  // Apply discount to total amount

@@ -87,6 +87,9 @@ function App() {
       amount: serviceDetails.amount || 0,
     };
 
+
+    console.log(bookingDetails)
+
     if (
       !bookingDetails.name ||
       !bookingDetails.email ||
@@ -109,7 +112,7 @@ function App() {
           bookingStart: "${bookingDetails.bookingStart}",
           bookingEnd: "${bookingDetails.bookingEnd}",
           serviceName: "${bookingDetails.serviceName}",
-          servicePrice: ${bookingDetails.servicePrice},
+          pricePerSquareMeter: ${bookingDetails.pricePerSquareMeter},
           totalArea: ${bookingDetails.totalArea},
           discount: ${bookingDetails.discount},
           amount: ${bookingDetails.amount}
@@ -120,6 +123,29 @@ function App() {
       }
     `;
 
+    /* const query = `
+      mutation {
+        addBooking(
+          name: "${bookingDetails.name}",
+          email: "${bookingDetails.email}",
+          phone: "${bookingDetails.phone}",
+          address: "${bookingDetails.address}",
+          postalCode: "${bookingDetails.postalCode}",
+          bookingDate: "${bookingDetails.bookingDate}",
+          bookingStart: "${bookingDetails.bookingStart}",
+          bookingEnd: "${bookingDetails.bookingEnd}",
+          serviceName: "${bookingDetails.serviceName}",
+          servicePrice: ${bookingDetails.servicePrice},
+          totalArea: ${bookingDetails.totalArea},
+          discount: ${bookingDetails.discount},
+          amount: ${bookingDetails.amount}
+        ) {
+          id
+          name
+        }
+      }
+    `;
+ */
     try {
       const response = await fetch("http://localhost:4000/graphql", {
         method: "POST",
